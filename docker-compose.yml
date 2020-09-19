@@ -1,0 +1,21 @@
+version: '3'
+services:
+  php-apache:
+    image: php:7.4-apache
+      ports:
+        - 80:8086
+      volumes:
+        - ./web:/var/www/html:z
+      links:
+        - 'mariadb'
+  mariadb:
+    image: mariadb:5
+    environment:
+      MYSQL_USER: hlxce
+      MYSQL_PASSWORD: hlxce
+      MYSQL_DATABASE: hlxce
+      MYSQL_ROOT_PASSWORD: hlxce
+    volumes:
+      - mariadb:/var/lib/mysql
+volumes:
+    mariadb:
