@@ -9,9 +9,9 @@ Configuration file - "config.php"
 */
 
 // MySQL information for L4D Stats DB
-$mysql_server = "127.0.0.1";
-$mysql_db = "l4dstats";
-$mysql_user = "l4d";
+$mysql_server = "database";
+$mysql_db = "l4d2_stats";
+$mysql_user = "l4d2_stats";
 $mysql_password = "l4d";
 $mysql_tableprefix = "";
 
@@ -24,7 +24,7 @@ $mysql_ip2c_password = "";
 $mysql_ip2c_tableprefix = "";
 
 // Heading for the stats page.
-$site_name = "YOUR SITE NAME HERE";
+$site_name = "ForgeSparks";
 
 // Game server address (adds a Steam connection link over the site name)
 // Multiple game server addresses supported (just write multiple configurations and use the correct syntax for each of them)
