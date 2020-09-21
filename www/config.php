@@ -12,7 +12,7 @@ Configuration file - "config.php"
 $mysql_server = "database";
 $mysql_db = "l4d2_stats";
 $mysql_user = "l4d2_stats";
-$mysql_password = "l4d";
+$mysql_password = "<password>";
 $mysql_tableprefix = "";
 
 // MySQL information for IP to Country DB
