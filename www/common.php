@@ -1,9 +1,6 @@
 <?php
 /*
 ================================================
-LEFT 4 DEAD AND LEFT 4 DEAD 2 PLAYER RANK
-Copyright (c) 2010 Mikko Andersson
-================================================
 Common PHP functions and code - "common.php"
 ================================================
 */
@@ -38,7 +35,7 @@ function php4_scandir($dir, $listDirectories=false, $skipDots=true)
 		{
 			if ((($file == "." || $file == "..") && !$skipDots) || ($file != "." && $file != ".."))
 			{
-				if (!$listDirectories && is_dir($file)) 
+				if (!$listDirectories && is_dir($file))
 					continue;
 
 				array_push($dirArray, basename($file));
@@ -51,35 +48,32 @@ function php4_scandir($dir, $listDirectories=false, $skipDots=true)
 	return $dirArray;
 }
 
-function getfriendid($pszAuthID)
-{
-	$iServer = "0";
-	$iAuthID = "0";
+function getfriendid($pszAuthID) {
+  $iServer = "0";
+  $iAuthID = "0";
 
-	$szAuthID = $pszAuthID;
+  $szAuthID = $pszAuthID;
 
-	$szTmp = strtok($szAuthID, ":");
+  $szTmp = strtok($szAuthID, ":");
 
-	while(($szTmp = strtok(":")) !== false)
-	{
-		$szTmp2 = strtok(":");
-		if($szTmp2 !== false)
-		{
-			$iServer = $szTmp;
-			$iAuthID = $szTmp2;
-		}
-	}
+  while(($szTmp = strtok(":")) !== false) {
+    $szTmp2 = strtok(":");
+    if ($szTmp2 !== false) {
+      $iServer = $szTmp;
+      $iAuthID = $szTmp2;
+    }
+  }
 
-	if($iAuthID == "0")
-		return "0";
+  if ($iAuthID == "0")
+    return "0";
 
-	$i64friendID = bcmul($iAuthID, "2");
+  $i64friendID = bcmul($iAuthID, "2");
 
-	//Friend ID's with even numbers are the 0 auth server.
-	//Friend ID's with odd numbers are the 1 auth server.
-	$i64friendID = bcadd($i64friendID, bcadd("76561197960265728", $iServer));
+  //Friend ID's with even numbers are the 0 auth server.
+  //Friend ID's with odd numbers are the 1 auth server.
+  $i64friendID = bcadd($i64friendID, bcadd("76561197960265728", $iServer));
 
-	return $i64friendID;
+  return $i64friendID;
 }
 
 function formatage($date) {
@@ -294,7 +288,7 @@ function parseplayerprivacystate($profilexml)
 function parseplayerprofile($profilexml, $xpathnode)
 {
 	$arr = $profilexml->xpath($xpathnode);
-	
+
 	if (!$arr || count($arr) != 1)
 		return "";
 
@@ -317,7 +311,7 @@ function parseplayeravatar($profilexml, $avatarsize)
 	}
 
 	$retval = "";
-	
+
 	switch (strtolower($avatarsize))
 	{
 		case "icon":
@@ -341,7 +335,7 @@ function parseplayeravatar($profilexml, $avatarsize)
 			}
 			break;
 	}
-	
+
 	return $retval;
 }
 
@@ -888,14 +882,14 @@ if ($result && mysql_num_rows($result) > 0)
 		// This character is A PAIN... Find out how to convert it in to a HTML entity!
 		// http://www.fileformat.info/info/unicode/char/06d5/index.htm
 		// Maybe it's the same with all Arabic characters???? From right to left type of writing.
-		
+
 		$name = htmlentities($row['name'], ENT_COMPAT, "UTF-8");
 		//$name = str_replace("" , "&#1749;", $name);
 		//$titlename = str_replace("\"" , "\\\"", $name);
 
 		$avatarimg = "";
 		$playerheadline = "";
-		
+
 		if ($steam_profile_read && $i <= $top10players_additional_info)
 		{
 			$playersteamprofile = getplayersteamprofilexml($row['steamid']);
@@ -911,7 +905,7 @@ if ($result && mysql_num_rows($result) > 0)
 						$avatarimg = "<img src=\"" . $avatarimgurl . "\" border=\"0\">";
 					}
 				}
-				
+
 				$playerheadline = htmlentities(parseplayerheadline($playersteamprofile), ENT_COMPAT, "UTF-8");
 			}
 		}
@@ -920,12 +914,12 @@ if ($result && mysql_num_rows($result) > 0)
 		$country_record = $geoip->country($row['ip']);
 
 		$playername = ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid'] . "\">" . $name . "</a>";
-		
+
 		if ($playerheadline)
 		{
 			$playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td rowspan=\"2\">&nbsp;</td><td>" . $playername . "</td></tr><tr><td class=\"summary\">" . $playerheadline . "</td></tr></table>";
 		}
-		
+
 		if ($avatarimg)
 		{
 			$playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $avatarimg . "</td>" . ($playerheadline ? "" : "<td>&nbsp;</td>") . "<td>" . $playername . "</td></tr></table>";

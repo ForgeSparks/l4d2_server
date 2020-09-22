@@ -1,9 +1,6 @@
 <?php
 /*
 ================================================
-LEFT 4 DEAD AND LEFT 4 DEAD 2 PLAYER RANK
-Copyright (c) 2010 Mikko Andersson
-================================================
 Index / Players Online page - "index.php"
 ================================================
 */
@@ -113,11 +110,11 @@ if (mysql_error()) {
 		$player_ip = $row['ip'];
 
 		$avatarimg = "";
-		
+
 		if ($players_avatars_show && $players_online_avatars_show)
 		{
 			$avatarimgurl = getplayeravatar($row['steamid'], "icon");
-			
+
 			if($avatarimgurl)
 			{
 				$avatarimg = "<img src=\"" . $avatarimgurl . "\" border=\"0\">";
@@ -128,7 +125,7 @@ if (mysql_error()) {
 	        $country_record = $geoip->country($row['ip']);
 
 		$playername = ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a>";
-		
+
 		if ($avatarimg)
 		{
 			$playername = "<table border=0 cellspacing=0 cellpadding=0><tr><td>" . $avatarimg . "</td><td>&nbsp;" . $playername . "</td></tr></table>";
@@ -171,7 +168,7 @@ if (mysql_error()) {
 
 		$output .= "<br><br><img src=\"" . $googlemaps . "\">";
 	}
-	
+
 	/*
 	// This part of the code adds a chatlog window in your "frontpage" (Players Online)
 	// Download Extended Chat Log from here: http://forums.alliedmods.net/showthread.php?t=91331
@@ -187,7 +184,7 @@ if (mysql_error()) {
 
 $tpl->set('body', trim($output));
 
-// Output the top 10 
+// Output the top 10
 $tpl->set("top10", $top10);
 
 // Output the MOTD

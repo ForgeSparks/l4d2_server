@@ -1,8 +1,5 @@
 ================================================
 LEFT 4 DEAD AND LEFT 4 DEAD 2 PLAYER RANK
-Copyright (c) 2010 Mikko Andersson
-================================================
-Initial code written by msleeper
 ================================================
 
 INSTALLATION INSTRUCTIONS:
