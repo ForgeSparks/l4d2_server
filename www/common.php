@@ -5,17 +5,11 @@ Common PHP functions and code - "common.php"
 ================================================
 */
 
-// Include configuration file
-include("./config.php");
+// Require configuration file
+require_once('./config.php');
 
-// PHP 7.4 FIX BY PRIMEAS.DE
-require_once("mysql.php");
-
-// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-require_once("geoip2.phar");
-use GeoIp2\Database\Reader;
-$geoip = new Reader('GeoLite2-Country.mmdb');
-error_reporting(0);
+// Require mysql override
+require_once('mysql.php');
 
 // Include Template engine class
 include("./class_template.php");

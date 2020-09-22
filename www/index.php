@@ -6,18 +6,12 @@ Index / Players Online page - "index.php"
 */
 
 // Include the primary PHP functions file
-include("./common.php");
-
-// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-require_once("geoip2.phar");
-use GeoIp2\Database\Reader;
-$geoip = new Reader('GeoLite2-Country.mmdb');
-error_reporting(0);
+include('common.php');
 
 // Load outer template
-$tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
+$tpl = new Template('/templates/' . $templatefiles['layout.tpl']);
 
-$result = mysql_query("SELECT * FROM " . $mysql_tableprefix . "players WHERE lastontime >= '" . intval(time() - 300) . "' ORDER BY " . $TOTALPOINTS . " DESC");
+$result = mysql_query('SELECT * FROM ' . $mysql_tableprefix . "players WHERE lastontime >= '" . intval(time() - 300) . "' ORDER BY " . $TOTALPOINTS . " DESC");
 $playercount = number_format(mysql_num_rows($result));
 
 setcommontemplatevariables($tpl);
@@ -122,7 +116,7 @@ if (mysql_error()) {
 		}
 
 	        // PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-	        $country_record = $geoip->country($row['ip']);
+	        $country_record = $ip2c->country($row['ip']);
 
 		$playername = ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a>";
 

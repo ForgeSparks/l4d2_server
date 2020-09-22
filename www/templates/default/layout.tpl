@@ -17,6 +17,7 @@
       <div id="players_served" align="right">
         <?php foreach ($header_extra as $title => $value): ?>
         <h2><?php echo $title; ?>: <?php echo number_format($value); ?></h2>
+        <br>
         <?php endforeach; ?>
       </div>
     </div>
