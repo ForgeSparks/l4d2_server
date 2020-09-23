@@ -14,15 +14,6 @@ $mysql_password = "";
 // Heading for the stats page.
 $site_name = "ForgeSparks";
 
-// Game server address (adds a Steam connection link over the site name)
-// Multiple game server addresses supported (just write multiple configurations and use the correct syntax for each of them)
-/* THIS LINE: DO NOT MODIFY OR REMOVE */ $game_addresses = array();
-// Syntax:
-//   $game_addresses[] = array("<NAME>", "<ADDRESS>[:<PORT>]");
-// Examples:
-//   $game_addresses[] = array("Server 1: Left 4 Dead 2", "my.site.net:27016");
-//   $game_addresses[] = array("Server 2: Kill Them Zombies", "123.0.0.234");
-
 // Supported game versions
 // 0 = Support both L4D1 and L4D2
 // 1 = Left 4 Dead 1 (default)

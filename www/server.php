@@ -12,7 +12,6 @@ include("./common.php");
 require_once("geoip2.phar");
 use GeoIp2\Database\Reader;
 $geoip = new Reader('GeoLite2-Country.mmdb');
-error_reporting(0);
 
 // Load outer template
 $tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
@@ -186,9 +185,6 @@ $arr_demerits['Friendlies Left For Dead'] = $total['award_left4dead'];
 $arr_demerits['Infected Let In Safe Room'] = $total['award_letinsafehouse'];
 $arr_demerits['Witches Disturbed'] = $total['award_witchdisturb'];
 
-
-$playername = htmlentities($total['name'], ENT_COMPAT, "UTF-8");
-
 $tpl->set("title", "Server Stats"); // Window title
 $tpl->set("page_heading", "Server Stats"); // Page header
 
@@ -317,22 +313,18 @@ while ($row = mysql_fetch_array($result))
 			$gamemodename = "Versus";
 			break;
 		case 2:
-			if ($game_version == 1) continue;
 			$gamemodename = "Realism";
 			break;
 		case 3:
 			$gamemodename = "Survival";
 			break;
 		case 4:
-			if ($game_version == 1) continue;
 			$gamemodename = "Scavenge";
 			break;
 		case 5:
-			if ($game_version == 1) continue;
 			$gamemodename = "Realism&nbsp;Versus";
 			break;
 		case 6:
-			if ($game_version == 1) continue;
 			$gamemodename = "Mutations";
 			break;
 	}
@@ -385,20 +377,27 @@ while ($row = mysql_fetch_array($result))
 // PPM
 $stats->set("player_ppm", number_format(getppm($player_totalpoints, $totalplaytime), 2));
 $stats->set("player_ppm_coop", number_format(getppm($total['points'], $arr_ppm_playtime['coop']), 2));
-if ($game_version != 1)
-{
-	$stats->set("player_ppm_realism", "Realism: " . number_format(getppm($total['points_realism'], $arr_ppm_playtime['realism']), 2) . "<br>");
-	$stats->set("player_ppm_scavenge", "<br>Scavenge: " . number_format(getppm($total['points_scavenge_infected'] + $total['points_scavenge_survivors'], $arr_ppm_playtime['scavenge']), 2) .
-																		 "<br>Realism&nbsp;Versus: " . number_format(getppm($total['points_realism_infected'] + $total['points_realism_survivors'], $arr_ppm_playtime['realism&nbsp;versus']), 2) .
-																		 "<br>Mutations: " . number_format(getppm($total['points_mutations'], $arr_ppm_playtime['mutations']), 2));
-}
+if (isset($arr_ppm_playtime['realism']))
+  $stats->set("player_ppm_realism", "Realism: " . number_format(getppm($total['points_realism'], $arr_ppm_playtime['realism']), 2) . "<br>");
 else
-{
-	$stats->set("player_ppm_realism", "");
-	$stats->set("player_ppm_scavenge", "");
-}
-$stats->set("player_ppm_versus", number_format(getppm($total['points_infected'] + $total['points_survivors'], $arr_ppm_playtime['versus']), 2));
-$stats->set("player_ppm_survival", number_format(getppm($total['points_survival'], $arr_ppm_playtime['survival']), 2));
+  $stats->set("player_ppm_realism", "");
+
+if (isset($arr_ppm_playtime['scavenge'])) {
+  $stats->set("player_ppm_scavenge", "<br>Scavenge: " . number_format(getppm($total['points_scavenge_infected'] + $total['points_scavenge_survivors'], $arr_ppm_playtime['scavenge']), 2) .
+																	   "<br>Realism&nbsp;Versus: " . number_format(getppm($total['points_realism_infected'] + $total['points_realism_survivors'], $arr_ppm_playtime['realism&nbsp;versus']), 2) .
+                                     "<br>Mutations: " . number_format(getppm($total['points_mutations'], $arr_ppm_playtime['mutations']), 2));
+} else
+  $stats->set("player_ppm_scavenge", "");
+
+if (isset($arr_ppm_playtime['versus']))
+  $stats->set("player_ppm_versus", number_format(getppm($total['points_infected'] + $total['points_survivors'], $arr_ppm_playtime['versus']), 2));
+else
+  $stats->set("player_ppm_versus", "");
+
+if (isset($arr_ppm_playtime['survival']))
+  $stats->set("player_ppm_survival", number_format(getppm($total['points_survival'], $arr_ppm_playtime['survival']), 2));
+else
+  $stats->set("player_ppm_survival", "");
 
 $stats->set("totalplaytime_nor", getplaytime($totalplaytime_nor));
 $stats->set("totalplaytime_adv", getplaytime($totalplaytime_adv));

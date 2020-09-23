@@ -15,7 +15,6 @@ include("./common.php");
 require_once("geoip2.phar");
 use GeoIp2\Database\Reader;
 $geoip = new Reader('GeoLite2-Country.mmdb');
-error_reporting(0);
 
 // Load outer template
 $tpl = new Template("./templates/" . $templatefiles['layout.tpl']);

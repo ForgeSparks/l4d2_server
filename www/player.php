@@ -15,7 +15,6 @@ include('common.php');
 require_once("geoip2.phar");
 use GeoIp2\Database\Reader;
 $geoip = new Reader('GeoLite2-Country.mmdb');
-error_reporting(0);
 
 // Load outer template
 $tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
@@ -219,7 +218,7 @@ if (mysql_num_rows($result) > 0)
 
 	$stats->set("player_timedmaps", $times . " runs");
 
-	if (function_exists(bcadd)) $stats->set("player_url", "<a href=\"http://steamcommunity.com/profiles/" . getfriendid($row['steamid']) . "\">" . $playername . "'s Community Page</a>");
+	if (function_exists('bcadd')) $stats->set("player_url", "<a href=\"http://steamcommunity.com/profiles/" . getfriendid($row['steamid']) . "\">" . $playername . "'s Community Page</a>");
 	else $stats->set("player_url", "<b>Community page URL disabled</b>");
 
 	$stats->set("player_lastonline", date($lastonlineformat, $row['lastontime'] + ($dbtimemod * 3600)) . " (" . formatage(time() - $row['lastontime'] + ($dbtimemod * 3600)) . " ago)");

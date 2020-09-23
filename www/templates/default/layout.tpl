@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <?php echo $statspagemeta; ?>
+    <?php echo (isset($statspagemeta) ? $statspagemeta : ''); ?>
     <title>Left 4 Dead Player Stats :: <?php echo $title; ?></title>
     <link href="./templates/<?php echo $stylesheet; ?>" rel="stylesheet" type="text/css" />
   </head>

@@ -87,8 +87,8 @@ function getpopulation($population, $file, $cityonly) {
 	fclose($page);
 	asort($cityarr, SORT_NUMERIC);
 
-	$returncity = "";
-	$returncity2 = "";
+	$returncity = "Lamesa, TX";
+	$returncity2 = "The Earth";
 
 	foreach ($cityarr as $city => $pop) {
 		if ($population > $pop)
@@ -111,10 +111,7 @@ function gettotalpointsraw($row)
 {
 	$totalpoints = 0;
 
-	if ($game_version != 1)
-		$totalpoints = $row['points'] + $row['points_realism'] + $row['points_survivors'] + $row['points_infected'] + $row['points_survival'] + $row['points_scavenge_survivors'] + $row['points_scavenge_infected'] + $row['points_realism_survivors'] + $row['points_realism_infected'] + $row['points_mutations'];
-	else
-		$totalpoints = $row['points'] + $row['points_survivors'] + $row['points_infected'] + $row['points_survival'];
+	$totalpoints = $row['points'] + $row['points_realism'] + $row['points_survivors'] + $row['points_infected'] + $row['points_survival'] + $row['points_scavenge_survivors'] + $row['points_scavenge_infected'] + $row['points_realism_survivors'] + $row['points_realism_infected'] + $row['points_mutations'];
 
 	return $totalpoints;
 }
@@ -126,10 +123,7 @@ function gettotalpoints($row)
 
 function gettotalplaytimecalc($row)
 {
-	if ($game_version != 1)
-		return $row['playtime'] + $row['playtime_realism'] + $row['playtime_versus'] + $row['playtime_survival'] + $row['playtime_scavenge'] + $row['playtime_realismversus'] + $row['playtime_mutations'];
-	else
-		return $row['playtime'] + $row['playtime_versus'] + $row['playtime_survival'];
+	return $row['playtime'] + $row['playtime_realism'] + $row['playtime_versus'] + $row['playtime_survival'] + $row['playtime_scavenge'] + $row['playtime_realismversus'] + $row['playtime_mutations'];
 }
 
 function gettotalplaytime($row)
@@ -221,7 +215,7 @@ function createtablerowtooltip($row, $i)
 	$ppm_realismversus = number_format(getppm($row['points_realism_survivors'] + $row['points_realism_infected'], $row['playtime_realismversus']), 2);
 	$ppm_mutations = number_format(getppm($row['points_mutations'], $row['playtime_mutations']), 2);
 
-  return "<tr onmouseover=\"showtip('<b>Coop: " . $points_coop . " (PPM: " . $ppm_coop . ")<br>" . ($game_version != 1 ? "Realism: " . $points_realism . " (PPM: " . $ppm_realism . ")<br>Mutations: " . $points_mutations . " (PPM: " . $ppm_mutations . ")<br>" : "") . "Survival: " . $points_survival . " (PPM: " . $ppm_survival . ")<br>Versus: " . $points_versus . " (PPM: " . $ppm_versus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_versus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_versus_inf . "<br>" . ($game_version != 1 ? "<b>Scavenge: " . $points_scavenge . " (PPM: " . $ppm_scavenge . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_scavenge_sur . "<br>&nbsp;&nbsp;Infected: " . $points_scavenge_inf . "<br><b>Realism&nbsp;Versus: " . $points_realismversus . " (PPM: " . $ppm_realismversus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_realismversus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_realismversus_inf . "<br>" : "") . "<b>Playtime: " . $totalplaytime . "</b><br>&nbsp;&nbsp;Coop: " . $playtime_coop . "<br>" . ($game_version != 1 ? "&nbsp;&nbsp;Realism: " . $playtime_realism . "<br>" : "") . "&nbsp;&nbsp;Survival: " . $playtime_survival . "<br>&nbsp;&nbsp;Versus: " . $playtime_versus . ($game_version != 1 ? "<br>&nbsp;&nbsp;Scavenge: " . $playtime_scavenge . "<br>&nbsp;&nbsp;Realism&nbsp;Versus: " . $playtime_realismversus . "<br>&nbsp;&nbsp;Mutations: " . $playtime_mutations : "") . "');\" onmouseout=\"hidetip();\"" . (($i & 1) ? ">" : " class=\"alt\">");
+  return "<tr onmouseover=\"showtip('<b>Coop: " . $points_coop . " (PPM: " . $ppm_coop . ")<br>Realism: " . $points_realism . " (PPM: " . $ppm_realism . ")<br>Mutations: " . $points_mutations . " (PPM: " . $ppm_mutations . ")<br>Survival: " . $points_survival . " (PPM: " . $ppm_survival . ")<br>Versus: " . $points_versus . " (PPM: " . $ppm_versus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_versus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_versus_inf . "<br><b>Scavenge: " . $points_scavenge . " (PPM: " . $ppm_scavenge . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_scavenge_sur . "<br>&nbsp;&nbsp;Infected: " . $points_scavenge_inf . "<br><b>Realism&nbsp;Versus: " . $points_realismversus . " (PPM: " . $ppm_realismversus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_realismversus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_realismversus_inf . "<br><b>Playtime: " . $totalplaytime . "</b><br>&nbsp;&nbsp;Coop: " . $playtime_coop . "<br>&nbsp;&nbsp;Realism: " . $playtime_realism . "<br>&nbsp;&nbsp;Survival: " . $playtime_survival . "<br>&nbsp;&nbsp;Versus: " . $playtime_versus . "<br>&nbsp;&nbsp;Scavenge: " . $playtime_scavenge . "<br>&nbsp;&nbsp;Realism&nbsp;Versus: " . $playtime_realismversus . "<br>&nbsp;&nbsp;Mutations: " . $playtime_mutations . "');\" onmouseout=\"hidetip();\"" . (($i & 1) ? ">" : " class=\"alt\">");
 }
 
 function parseplayersummary($profilexml)
@@ -361,8 +355,8 @@ function getplayersteamprofilexml($steamid)
 Database fields
 */
 
-$TOTALPOINTS = "points + points_survivors + points_infected + points_survival" . ($game_version != 1 ? " + points_realism + points_scavenge_survivors + points_scavenge_infected + points_realism_survivors + points_realism_infected + points_mutations" : "");
-$TOTALPLAYTIME = "playtime + playtime_versus + playtime_survival" . ($game_version != 1 ? " + playtime_realism + playtime_scavenge + playtime_realismversus + playtime_mutations" : "");
+$TOTALPOINTS = "points + points_survivors + points_infected + points_survival + points_realism + points_scavenge_survivors + points_scavenge_infected + points_realism_survivors + points_realism_infected + points_mutations";
+$TOTALPLAYTIME = "playtime + playtime_versus + playtime_survival + playtime_realism + playtime_scavenge + playtime_realismversus + playtime_mutations";
 
 $templatesdir = "./templates";
 $templatesdir_default = $templatesdir . "/default";
@@ -419,268 +413,110 @@ $scavenge_campaigns = array();
 $realismversus_campaigns = array();
 $mutations_campaigns = array();
 
-if ($game_version == 1)
-{
-	$coop_campaigns = array("l4d_hospital" => "No Mercy",
-					   "l4d_airport" => "Dead Air",
-					   "l4d_smalltown" => "Death Toll",
-					   "l4d_farm" => "Blood Harvest",
-					   "l4d_garage" => "Crash Course",
-					   "" => "Custom Maps");
+$coop_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
-	$versus_campaigns = array("l4d_vs_hospital" => "No Mercy",
-					   "l4d_vs_airport" => "Dead Air",
-					   "l4d_vs_smalltown" => "Death Toll",
-					   "l4d_vs_farm" => "Blood Harvest",
-					   "l4d_garage" => "Crash Course",
-					   "" => "Custom Maps");
+$versus_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
-	$survival_campaigns = array("l4d_sv_lighthouse" => "Lighthouse",
-					   "l4d_hospital" => "No Mercy - Co-op",
-					   "l4d_airport" => "Dead Air - Co-op",
-					   "l4d_smalltown" => "Death Toll - Co-op",
-					   "l4d_farm" => "Blood Harvest - Co-op",
-						 "l4d_vs_hospital" => "No Mercy - Versus",
-					   "l4d_vs_airport" => "Dead Air - Versus",
-					   "l4d_vs_smalltown" => "Death Toll - Versus",
-					   "l4d_vs_farm" => "Blood Harvest - Versus",
-					   "l4d_garage" => "Crash Course",
-					   "" => "Custom Maps");
-}
-else if ($game_version == 2)
-{
-	$coop_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
+$survival_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
-	$versus_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
+$scavenge_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
-	$survival_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
+$realism_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
-	$scavenge_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
+$realismversus_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
-	$realism_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
-
-	$realismversus_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
-
-	$mutations_campaigns = array("c1m" => "Dead Center",
-					   "c2m" => "Dark Carnival",
-					   "c3m" => "Swamp Fever",
-					   "c4m" => "Hard Rain",
-					   "c5m" => "The Parish",
-					   "c6m" => "The Passing",
-					   "c7m" => "The Sacrifice",
-					   "c8m" => "No Mercy",
-					   "c9m" => "Crash Course",
-					   "c10m" => "Death Toll",
-					   "c11m" => "Dead Air",
-					   "c12m" => "Blood Harvest",
-					   "c13m" => "Cold Stream",
-					   "" => "Custom Maps");
-}
-else
-{
-	$coop_campaigns = array("l4d_hospital" => "No Mercy (L4D1)",
-					   "l4d_airport" => "Dead Air (L4D1)",
-					   "l4d_smalltown" => "Death Toll (L4D1)",
-					   "l4d_farm" => "Blood Harvest (L4D1)",
-					   "l4d_garage" => "Crash Course (L4D1)",
-						 "c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps");
-
-	$versus_campaigns = array("l4d_vs_hospital" => "No Mercy (L4D1)",
-					   "l4d_vs_airport" => "Dead Air (L4D1)",
-					   "l4d_vs_smalltown" => "Death Toll (L4D1)",
-					   "l4d_vs_farm" => "Blood Harvest (L4D1)",
-					   "l4d_garage" => "Crash Course (L4D1)",
-					   "c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps");
-
-	$survival_campaigns = array("l4d_sv_lighthouse" => "Lighthouse (L4D1)",
-					   "l4d_hospital" => "No Mercy - Co-op (L4D1)",
-					   "l4d_airport" => "Dead Air - Co-op (L4D1)",
-					   "l4d_smalltown" => "Death Toll - Co-op (L4D1)",
-					   "l4d_farm" => "Blood Harvest - Co-op (L4D1)",
-						 "l4d_vs_hospital" => "No Mercy - Versus (L4D1)",
-					   "l4d_vs_airport" => "Dead Air - Versus (L4D1)",
-					   "l4d_vs_smalltown" => "Death Toll - Versus (L4D1)",
-					   "l4d_vs_farm" => "Blood Harvest - Versus (L4D1)",
-					   "l4d_garage" => "Crash Course (L4D1)",
-					   "c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps");
-
-	$scavenge_campaigns = array("c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps (L4D2)");
-
-	$realism_campaigns = array("c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps (L4D2)");
-
-	$realismversus_campaigns = array("c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps (L4D2)");
-
-	$mutations_campaigns = array("c1m" => "Dead Center (L4D2)",
-					   "c2m" => "Dark Carnival (L4D2)",
-					   "c3m" => "Swamp Fever (L4D2)",
-					   "c4m" => "Hard Rain (L4D2)",
-					   "c5m" => "The Parish (L4D2)",
-					   "c6m" => "The Passing (L4D2)",
-					   "c7m" => "The Sacrifice (L4D2)",
-					   "c8m" => "No Mercy (L4D2)",
-					   "c9m" => "Crash Course (L4D2)",
-					   "c10m" => "Death Toll (L4D2)",
-					   "c11m" => "Dead Air (L4D2)",
-					   "c12m" => "Blood Harvest (L4D2)",
-					   "c13m" => "Cold Stream (L4D2)",
-					   "" => "Custom Maps (L4D2)");
-}
+$mutations_campaigns = array("c1m" => "Dead Center",
+				   "c2m" => "Dark Carnival",
+				   "c3m" => "Swamp Fever",
+				   "c4m" => "Hard Rain",
+				   "c5m" => "The Parish",
+				   "c6m" => "The Passing",
+				   "c7m" => "The Sacrifice",
+				   "c8m" => "No Mercy",
+				   "c9m" => "Crash Course",
+				   "c10m" => "Death Toll",
+				   "c11m" => "Dead Air",
+				   "c12m" => "Blood Harvest",
+				   "c13m" => "Cold Stream",
+				   "" => "Custom Maps");
 
 $realismlink = "";
 $scavengelink = "";
@@ -691,23 +527,20 @@ $scavengecmblink = "";
 $realismversuscmblink = "";
 $mutationscmblink = "";
 
-if ($game_version != 1)
-{
-	$realismlink = "<a href=\"maps.php?type=realism\">Realism Stats</a>";
-	$scavengelink = "<a href=\"maps.php?type=scavenge\">Scavenge Stats</a>";
-	$realismversuslink = "<a href=\"maps.php?type=realismversus\">Realism&nbsp;Versus Stats</a>";
-	$mutationslink = "<a href=\"maps.php?type=mutations\">Mutations</a>";
+$realismlink = "<a href=\"maps.php?type=realism\">Realism Stats</a>";
+$scavengelink = "<a href=\"maps.php?type=scavenge\">Scavenge Stats</a>";
+$realismversuslink = "<a href=\"maps.php?type=realismversus\">Realism&nbsp;Versus Stats</a>";
+$mutationslink = "<a href=\"maps.php?type=mutations\">Mutations</a>";
 
-	$realismcmblink = str_replace("\"", "&quot;", $realismlink) . "<br>";
-	$scavengecmblink = str_replace("\"", "&quot;", $scavengelink) . "<br>";
-	$realismversuscmblink = str_replace("\"", "&quot;", $realismversuslink) . "<br>";
-	$mutationscmblink = str_replace("\"", "&quot;", $mutationslink) . "<br>";
+$realismcmblink = str_replace("\"", "&quot;", $realismlink) . "<br>";
+$scavengecmblink = str_replace("\"", "&quot;", $scavengelink) . "<br>";
+$realismversuscmblink = str_replace("\"", "&quot;", $realismversuslink) . "<br>";
+$mutationscmblink = str_replace("\"", "&quot;", $mutationslink) . "<br>";
 
-	$realismlink = "<li>" . $realismlink . "</li>";
-	$scavengelink = "<li>" . $scavengelink . "</li>";
-	$scavengelink = "<li>" . $scavengelink . "</li>";
-	$mutationslink = "<li>" . $mutationslink . "</li>";
-}
+$realismlink = "<li>" . $realismlink . "</li>";
+$scavengelink = "<li>" . $scavengelink . "</li>";
+$scavengelink = "<li>" . $scavengelink . "</li>";
+$mutationslink = "<li>" . $mutationslink . "</li>";
 
 $timedmapslink = "";
 

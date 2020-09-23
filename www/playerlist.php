@@ -15,22 +15,30 @@ include("./common.php");
 require_once("geoip2.phar");
 use GeoIp2\Database\Reader;
 $geoip = new Reader('GeoLite2-Country.mmdb');
-error_reporting(0);
 
 // Load outer template
 $tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
 
 // Set Steam ID as var, and quit on hack attempt
-if (strstr($_GET['page'], "/")) exit;
-$page = $_GET['page'];
+$page = '';
+if (isset($_GET['page'])) {
+  if (strstr($_GET['page'], "/")) exit;
+  $page = $_GET['page'];
+}
 
 // Set game type as var, and quit on hack attempt
-if (strstr($_GET['type'], "/")) exit;
-$type = strtolower($_GET['type']);
+$type = '';
+if (isset($_GET['type'])) {
+  if (strstr($_GET['type'], "/")) exit;
+  $type = strtolower($_GET['type']);
+}
 
 // Set game type as var, and quit on hack attempt
-if (strstr($_GET['team'], "/")) exit;
-$team = strtolower($_GET['team']);
+$team = '';
+if (isset($_GET['team'])) {
+  if (strstr($_GET['team'], "/")) exit;
+  $team = strtolower($_GET['team']);
+}
 
 $query = "";
 
