@@ -6,10 +6,10 @@ Index / Players Online page - "index.php"
 */
 
 // Include the primary PHP functions file
-include('common.php');
+require_once('common.php');
 
 // Load outer template
-$tpl = new Template('/templates/'.$templatefiles['layout.tpl']);
+$tpl = new Template('templates/'.$templatefiles['layout.tpl']);
 
 $result = mysql_query('SELECT * FROM players WHERE lastontime >= \''.intval(time() - 300).'\' ORDER BY '.$TOTALPOINTS.' DESC');
 $playercount = number_format(mysql_num_rows($result));

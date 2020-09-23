@@ -1,32 +1,26 @@
 <?php
 /*
 ================================================
-LEFT 4 DEAD AND LEFT 4 DEAD 2 PLAYER RANK
-Copyright (c) 2010 Mikko Andersson
-================================================
 Player Search page - "search.php"
 ================================================
 */
 
 // Include the primary PHP functions file
-include("./common.php");
-
-// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-require_once("geoip2.phar");
-use GeoIp2\Database\Reader;
-$geoip = new Reader('GeoLite2-Country.mmdb');
+require_once('common.php');
 
 // Load outer template
-$tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
+$tpl = new Template('templates/'.$templatefiles['layout.tpl']);
 
 // Set Steam ID as var, and quit on hack attempt
-$searchstring = mysql_real_escape_string($_POST['search']);
-if ($searchstring."" == "") $searchstring = md5("nostring");
+if (isset($_POST['search']))
+  $searchstring = mysql_real_escape_string($_POST['search']);
+else
+  $searchstring = md5('nostring');
 
 setcommontemplatevariables($tpl);
 
-$tpl->set("title", "Player Search"); // Window title
-$tpl->set("page_heading", "Player Search"); // Page header
+$tpl->set('title', 'Player Search'); // Window title
+$tpl->set('page_heading', 'Player Search'); // Page header
 
 $result = mysql_query("SELECT * FROM players WHERE name LIKE '%" . $searchstring . "%' OR steamid LIKE '%" . $searchstring . "%' ORDER BY points + points_survivors + points_infected DESC LIMIT 100");
 if (mysql_error()) {

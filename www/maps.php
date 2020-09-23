@@ -1,54 +1,15 @@
 <?php
-
 /*
-
 ================================================
-
-LEFT 4 DEAD AND LEFT 4 DEAD 2 PLAYER RANK
-
-Copyright (c) 2010 Mikko Andersson
-
-================================================
-
 Campaign stats - "maps.php"
-
 ================================================
-
-Changelog
-
-
-
--- 8/19/09 Customized by muukis
-
-Added support for custom maps.
-
-
-
--- 8/23/09 Customized by muukis
-
-Fixed some lines that could cause errors in some
-
-PHP configurations.
-
-================================================
-
 */
 
-
-
 // Include the primary PHP functions file
-
-include("./common.php");
-
-// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-require_once("geoip2.phar");
-use GeoIp2\Database\Reader;
-$geoip = new Reader('GeoLite2-Country.mmdb');
-
+require_once('common.php');
 
 // Load outer template
-
-$tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
+$tpl = new Template('templates/'.$templatefiles['layout.tpl']);
 
 
 

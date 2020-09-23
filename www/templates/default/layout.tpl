@@ -4,20 +4,21 @@
     <meta charset="utf-8">
     <?php echo (isset($statspagemeta) ? $statspagemeta : ''); ?>
     <title>Left 4 Dead Player Stats :: <?php echo $title; ?></title>
-    <link href="./templates/<?php echo $stylesheet; ?>" rel="stylesheet" type="text/css" />
+    <link href="templates/<?php echo $stylesheet; ?>" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <script type="text/javascript" src="./templates/<?php echo $statstooltip; ?>"></script>
-    <script type="text/javascript" src="./templates/<?php echo $statscombobox; ?>"></script>
+    <script type="text/javascript" src="templates/<?php echo $statstooltip; ?>"></script>
+    <script type="text/javascript" src="templates/<?php echo $statscombobox; ?>"></script>
     <div id="header">
       <div id="logo">
-        <h1>Left 4 Dead Player Stats</h1>
-        <h2><?php echo $site_name; ?></h2>
+        <h1><?php echo $site_name; ?></h1>
+        <br>
+        <h2>Left 4 Dead Player Stats</h2>
       </div>
       <div id="players_served" align="right">
         <?php foreach ($header_extra as $title => $value): ?>
-        <h2><?php echo $title; ?>: <?php echo number_format($value); ?></h2>
         <br>
+        <h2><?php echo $title; ?>: <?php echo number_format($value); ?></h2>
         <?php endforeach; ?>
       </div>
     </div>
