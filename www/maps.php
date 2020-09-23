@@ -83,7 +83,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	$totals = array();
 
-	
+
 
 	if ($type == "coop")
 
@@ -185,9 +185,9 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 
 
-		$query .= " FROM " . $mysql_tableprefix . "maps";
+		$query .= " FROM maps";
 
-		
+
 
 		if (strlen($prefix) > 0)
 
@@ -197,7 +197,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 			$query .= " WHERE custom = 1 AND playtime_nor + playtime_adv + playtime_exp > 0";
 
-		
+
 
 		$query .= $query_where;
 
@@ -205,13 +205,13 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 			$result = mysql_query($query) or die(mysql_error());
 
-	
+
 
 			if (mysql_num_rows($result) <= 0)
 
 				continue;
 
-		
+
 
 			$playtime = 0;
 
@@ -227,7 +227,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 			$infected_win = 0;
 
-	
+
 
 			while ($row = mysql_fetch_array($result))
 
@@ -257,7 +257,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 			}
 
-			
+
 
 			$totals['playtime'] += $playtime;
 
@@ -289,13 +289,13 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	}
 
-	
+
 
 	$line = ($i & 1) ? "<tr>" : "<tr class=\"alt\">";
 
 	$maparr[] = $line . "<td><b>SERVER TOTAL</b></td><td><b>" . formatage($totals['playtime'] * 60) . "</b></td>" . (($type == "versus" || $type == "scavenge" || $type == "realismversus") ? "<td><b>" . number_format($totals['infected_win']) . "</b></td><td><b>" . number_format($totals['points_infected']) . "</b></td>" : "") . "<td><b>" . number_format($totals['points']) . (($type == "versus" || $type == "scavenge" || $type == "realismversus") ? "" : " (" . number_format(getppm($totals['points'], $totals['playtime']), 2) . ")") . "</b></td><td><b>" . number_format($totals['kills']) . "</b></td>" . (($type == "versus" || $type == "scavenge" || $type == "realismversus") ? "<td><b>" . number_format($totals['kill_survivor']) . "</b></td>" : "") . (($type == "coop" || $type == "realism" || $type == "survival" || $type == "mutations") ? "<td><b>" . number_format($totals['restarts']) . "</b></td>" : "") . "</tr>\n";
 
-	
+
 
 	$stats = new Template("./templates/" . $templatefiles["maps_overview_" . $type . ".tpl"]);
 
@@ -311,7 +311,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	$output = $stats->fetch("./templates/" . $templatefiles["maps_overview_" . $type . ".tpl"]);
 
-	
+
 
 	foreach ($campaigns as $prefix => $title) {
 
@@ -359,9 +359,9 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 
 
-		$query .= " FROM " . $mysql_tableprefix . "maps";
+		$query .= " FROM maps";
 
-		
+
 
 		if (strlen($prefix) > 0)
 
@@ -407,13 +407,13 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 		}
 
-		
+
 
 		$maps->set("maps", $maparr);
 
 		$body = $maps->fetch("./templates/" . $templatefiles["maps_campaign_" . $type . ".tpl"]);
 
-		
+
 
 		$stats->set("page_body", $body);
 
@@ -435,7 +435,7 @@ $tpl->set("body", trim($output));
 
 
 
-// Output the top 10 
+// Output the top 10
 
 $tpl->set("top10", $top10);
 
@@ -452,4 +452,3 @@ $tpl->set("motd_message", $layout_motd);
 echo $tpl->fetch("./templates/" . $templatefiles['layout.tpl']);
 
 ?>
-

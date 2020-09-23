@@ -29,7 +29,7 @@ setcommontemplatevariables($tpl);
 $tpl->set("title", "Player Search"); // Window title
 $tpl->set("page_heading", "Player Search"); // Page header
 
-$result = mysql_query("SELECT * FROM " . $mysql_tableprefix . "players WHERE name LIKE '%" . $searchstring . "%' OR steamid LIKE '%" . $searchstring . "%' ORDER BY points + points_survivors + points_infected DESC LIMIT 100");
+$result = mysql_query("SELECT * FROM players WHERE name LIKE '%" . $searchstring . "%' OR steamid LIKE '%" . $searchstring . "%' ORDER BY points + points_survivors + points_infected DESC LIMIT 100");
 if (mysql_error()) {
   $output = "<p><b>MySQL Error:</b> " . mysql_error() . "</p>\n";
 } else {
@@ -44,7 +44,7 @@ if (mysql_error()) {
     $country_record = $geoip->country($row['ip']);
 
     $line = createtablerowtooltip($row, $i);
-    $line .= "<td>" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a></td>";
+    $line .= "<td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> <a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a></td>";
     $line .= "<td>" . gettotalpoints($row) . "</td><td>" . gettotalplaytime($row) . "</td></tr>\n";
 
     $i++;

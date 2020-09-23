@@ -37,7 +37,7 @@ $query = "";
 if($type == "" || $type == "coop" || $type == "realism" || $type == "versus" || $type == "survival" || $type == "scavenge" || $type == "realismversus" || $type == "mutations")
 {
 	$typelabel = "";
-	
+
 	if ($type == "coop") $typelabel = " (Coop)";
 	else if ($type == "versus" && $team == "") $typelabel = " (Versus)";
 	else if ($type == "scavenge" && $team == "") $typelabel = " (Scavenge)";
@@ -52,7 +52,7 @@ if($type == "" || $type == "coop" || $type == "realism" || $type == "versus" || 
 	else if ($type == "realismversus" && $team == "infected") $typelabel = " (Realism&nbsp;Versus : Infected)";
 	else if ($type == "mutations" && $team == "") $typelabel = " (Mutations)";
 	else $team = "";
-	
+
 	setcommontemplatevariables($tpl);
 
 	$tpl->set("title", "Player Rankings" . $typelabel); // Window title
@@ -60,7 +60,7 @@ if($type == "" || $type == "coop" || $type == "realism" || $type == "versus" || 
 
 	$sort = "";
 	$playtime = "";
-	
+
 	if ($type == "coop")
 	{
 		$playtime = "playtime";
@@ -107,14 +107,14 @@ if($type == "" || $type == "coop" || $type == "realism" || $type == "versus" || 
 		$playtime = $TOTALPLAYTIME;
 		$sort = $TOTALPOINTS;
 	}
-	
-	$query = "SELECT COUNT(*) as players_count FROM " . $mysql_tableprefix . "players WHERE " . $playtime . " > 0";
+
+	$query = "SELECT COUNT(*) as players_count FROM players WHERE " . $playtime . " > 0";
 
 	$result = mysql_query($query);
-	
+
 	if (mysql_error()) {
     $output = "<p><b>MySQL Error:</b> " . mysql_error() . "</p>\n";
-	
+
 	} else {
 		$row = mysql_fetch_array($result);
 
@@ -152,7 +152,7 @@ if($type == "" || $type == "coop" || $type == "realism" || $type == "versus" || 
 
 		if ($row['players_count'] > 0)
 		{
-	    $query = "SELECT *, " . $sort . " as real_points, " . $playtime . " as real_playtime FROM " . $mysql_tableprefix . "players where " . $playtime . " > 0 ORDER BY " . $sort . " DESC LIMIT ". intval($page_current * $page_perpage) .",". $page_perpage;
+	    $query = "SELECT *, " . $sort . " as real_points, " . $playtime . " as real_playtime FROM players where " . $playtime . " > 0 ORDER BY " . $sort . " DESC LIMIT ". intval($page_current * $page_perpage) .",". $page_perpage;
 	    $result = mysql_query($query);
 
 			if (mysql_error())
@@ -170,7 +170,7 @@ if($type == "" || $type == "coop" || $type == "realism" || $type == "versus" || 
 	        $country_record = $geoip->country($row['ip']);
 
 	        $line = createtablerowtooltip($row, $i);
-	        $line .= "<td align=\"center\">" . number_format($i) . "</td><td>" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a></td>";
+	        $line .= "<td align=\"center\">" . number_format($i) . "</td><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> <a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a></td>";
 	        $line .= "<td>" . number_format($row['real_points']) . "</td>";
 	        $line .= "<td>" . formatage($row['real_playtime'] * 60) . "</td>";
 	        $line .= "<td>" . formatage(time() - $row['lastontime']) . " ago</td></tr>\n";

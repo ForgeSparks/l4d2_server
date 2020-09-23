@@ -9,7 +9,7 @@ Player stats page - "player.php"
 */
 
 // Include the primary PHP functions file
-include("./common.php");
+include('common.php');
 
 // PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 require_once("geoip2.phar");
@@ -26,10 +26,10 @@ $id = mysql_real_escape_string($_GET['steamid']);
 
 setcommontemplatevariables($tpl);
 
-$result = mysql_query("SELECT * FROM " . $mysql_tableprefix . "players WHERE steamid = '" . $id . "'");
+$result = mysql_query("SELECT * FROM players WHERE steamid = '" . $id . "'");
 $row = mysql_fetch_array($result);
 $totalpoints = $row['points'] + $row['points_survival'] + $row['points_survivors'] + $row['points_infected'] + ($game_version != 1 ? $row['points_realism'] + $row['points_scavenge_survivors'] + $row['points_scavenge_infected'] + $row['points_realism_survivors'] + $row['points_realism_infected'] + $row['points_mutations'] : 0);
-$rankrow = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS rank FROM " . $mysql_tableprefix . "players WHERE points + points_survival + points_survivors + points_infected" . ($game_version != 1 ? " + points_realism + points_scavenge_survivors + points_scavenge_infected + points_realism_survivors + points_realism_infected + points_mutations" : "") . " >= '" . $totalpoints . "'"));
+$rankrow = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS rank FROM players WHERE points + points_survival + points_survivors + points_infected" . ($game_version != 1 ? " + points_realism + points_scavenge_survivors + points_scavenge_infected + points_realism_survivors + points_realism_infected + points_mutations" : "") . " >= '" . $totalpoints . "'"));
 $rank = $rankrow['rank'];
 
 $arr_kills = array();
@@ -110,26 +110,23 @@ if (mysql_num_rows($result) > 0)
 
 		if ($playersteamprofile)
 		{
-			if ($players_avatars_show)
-			{
-				$avatarimgurl = parseplayeravatar($playersteamprofile, "full");
-				
-				if (!$avatarimgurl)
-				{
-					$avatarimgurl = parseplayeravatar($playersteamprofile, "medium");
-				}
-				
-				if (!$avatarimgurl)
-				{
-					$avatarimgurl = parseplayeravatar($playersteamprofile, "icon");
-				}
+			$avatarimgurl = parseplayeravatar($playersteamprofile, "full");
 
-				if($avatarimgurl)
-				{
-					$avatarimg = "<img src='" . $avatarimgurl . "' border='0'>";
-				}
+			if (!$avatarimgurl)
+			{
+				$avatarimgurl = parseplayeravatar($playersteamprofile, "medium");
 			}
-			
+
+			if (!$avatarimgurl)
+			{
+				$avatarimgurl = parseplayeravatar($playersteamprofile, "icon");
+			}
+
+			if($avatarimgurl)
+			{
+				$avatarimg = "<img src='" . $avatarimgurl . "' border='0'>";
+			}
+
 			$playercurrentname = htmlentities(parseplayername($playersteamprofile), ENT_COMPAT, "UTF-8");
 			$playersummary = htmlentities(parseplayersummary($playersteamprofile), ENT_COMPAT, "UTF-8");
 			$playerheadline = htmlentities(parseplayerheadline($playersteamprofile), ENT_COMPAT, "UTF-8");
@@ -137,16 +134,16 @@ if (mysql_num_rows($result) > 0)
 			$playersteamrating = htmlentities(parseplayersteamrating($playersteamprofile), ENT_COMPAT, "UTF-8");
 			$playermembersince = htmlentities(parseplayermembersince($playersteamprofile), ENT_COMPAT, "UTF-8");
 			$playerprivacystate = htmlentities(parseplayerprivacystate($playersteamprofile), ENT_COMPAT, "UTF-8");
-			
+
 			$isplayerprofileprivate = ($playerprivacystate != "public");
-			
+
 			if ($playersummary == "No information given.")
 			{
 				$playersummary = "";
 			}
-			
+
 			$playerprofileinfo = "<table cellpadding='0' cellspacing='0' border='0' style='font-size:9px;'>";
-			
+
 			if ($playercurrentname != $playername2)
 			{
 				$playercurrentname = "<tr><td><i>Current&nbsp;name:</i></td><td width='20px'>&nbsp;</td><td width='100%'><i><b>" . $playercurrentname . "</b></i></td></tr>";
@@ -155,20 +152,20 @@ if (mysql_num_rows($result) > 0)
 			{
 				$playercurrentname = "";
 			}
-			
+
 			if (!$isplayerprofileprivate)
 			{
 				if ($playerheadline)
 				{
 					$playerprofileinfo .= "<tr><td colspan='3' style='font-size:12px;'><b>" . $playerheadline . "</b></td></tr>";
 				}
-				
+
 				if ($playersummary)
 				{
 					$playerprofileinfo .= "<tr><td colspan='3' style='color:#FFCC33;'>" . $playersummary . "</td></tr>";
 				}
 			}
-			
+
 			$playerprofileinfo .= "<tr><td colspan='3' style='font-size:6px;'>&nbsp;</td></tr>";
 			$playerprofileinfo .= $playercurrentname;
 
@@ -183,29 +180,29 @@ if (mysql_num_rows($result) > 0)
 				{
 					$playerprofileinfo .= "<tr><td>Steam&nbsp;Rating:</td><td width='20px'>&nbsp;</td><td width='100%'><b>" . $playersteamrating . "</b></td></tr>";
 				}
-				
+
 				if ($playermembersince)
 				{
 					$playerprofileinfo .= "<tr><td>Steam&nbsp;Member&nbsp;Since:</td><td width='20px'>&nbsp;</td><td width='100%'><b>" . $playermembersince . "</b></td></tr>";
 				}
-				
+
 				if ($playerhoursplayed2wk)
 				{
 					$playerprofileinfo .= "<tr><td>Steam&nbsp;Playing&nbsp;Time:</td><td width='20px'>&nbsp;</td><td width='100%'><b>" . $playerhoursplayed2wk . " hrs past 2 weeks</b></td></tr>";
 				}
 			}
-			
+
 			$playerprofileinfo .= "</table>";
-			
+
 			$steamprofiletable = "<table cellspacing='0' cellpadding='0' border='0'><tr><td valign='top'>" . $avatarimg . "</td><td>&nbsp;</td><td valign='top'><div class='post'><h1 class='title' style='background:none;padding:0;margin-top:-8px;'>" . $playername2 . "</h1></div><div style='background:none;padding:0;margin-top:-20px;max-width:300px'>" . $playerprofileinfo . "</div></td></tr></table>";
-			
+
 			$anchor = "<a href=\"http://steamcommunity.com/profiles/" . getfriendid($row['steamid']) . "\" onmouseover=\"showtip('" . str_replace("\"", "\\\"", str_replace("'", "\\'", str_replace("\\", "\\\\", $steamprofiletable))) . "');\" onmouseout=\"hidetip();\">";
-			
+
 			$playername2 = $anchor . $playername2 . "</a>";
 		}
 	}
-	
-	$timesrow = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS times FROM " . $mysql_tableprefix . "timedmaps WHERE steamid = '" . $id . "'"));
+
+	$timesrow = mysql_fetch_array(mysql_query("SELECT COUNT(*) AS times FROM timedmaps WHERE steamid = '" . $id . "'"));
 	$times = $timesrow['times'];
 
 	$tpl->set("title", "Viewing Player: " . $playername); // Window title
@@ -213,33 +210,11 @@ if (mysql_num_rows($result) > 0)
 
 	$stats = new Template("./templates/" . $templatefiles['player.tpl']);
 
-	$stats->set("player_name", $playername);
-	if ($showplayerflags)
-	{
-		$ip2c->get_country_code($row['ip']);
+  $stats->set("player_name", $playername);
 
-		$city_name = ($showplayercity ? $ip2c->get_city_name($row['ip']) : "");
-		$country_name = htmlentities($ip2c->get_country_name($row['ip']), ENT_COMPAT, "UTF-8");
+	$country_record = $geoip->country($row['ip']);
+	$stats->set("player_country", "<tr><td>Location:</td><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . $country_record->country->name . "</td></tr>");
 
-		$loc_lon = $ip2c->get_longitude($row['ip']);
-		$loc_lat = $ip2c->get_latitude($row['ip']);
-
-		$link_start = "";
-		$link_stop = "";
-
-		if (strlen($city_name))
-			$city_name .= ", ";
-
-		if ($loc_lon != 0.0 || $loc_lat != 0.0)
-		{
-			$link_start = "<a href=\"http://maps.google.com/maps?q=" . $loc_lat. "," . $loc_lon . "%28" . str_replace(" ", "+", (strlen($city_name) > 0 ? $city_name : "") . $country_name) . "%29" . $googlemaps_addparam . "\" target=\"_blank\">";
-			$link_stop = "</a>";
-		}
-
-		// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-		$country_record = $geoip->country($row['ip']);
-		$stats->set("player_country", "<tr><td>Location:</td><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . $country_record->country->name . "</td></tr>");
-	}
 	$stats->set("player_steamid", $row['steamid']);
 
 	$stats->set("player_timedmaps", $times . " runs");

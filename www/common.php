@@ -5,41 +5,31 @@ Common PHP functions and code - "common.php"
 ================================================
 */
 
-// Require configuration file
-require_once('./config.php');
-
-// Require mysql override
+require_once('config.php');
 require_once('mysql.php');
+
+require_once("geoip2.phar");
+use GeoIp2\Database\Reader;
+$geoip = new Reader('GeoLite2-Country.mmdb');
 
 // Include Template engine class
 include("./class_template.php");
 
-// IP to Country
-include("./ip2country.php");
-$ip2c = new ip2country();
-$ip2c->set_tableprefix($mysql_ip2c_tableprefix);
+function php_scandir($dir, $listDirectories=false, $skipDots=true) {
+  $dirArray = array();
+  if ($handle = opendir($dir)) {
+    while (false !== ($file = readdir($handle))) {
+      if ((($file == "." || $file == "..") && !$skipDots) || ($file != "." && $file != "..")) {
+        if (!$listDirectories && is_dir($file))
+          continue;
 
-function php4_scandir($dir, $listDirectories=false, $skipDots=true)
-{
-	$dirArray = array();
+        array_push($dirArray, basename($file));
+      }
+    }
+    closedir($handle);
+  }
 
-	if ($handle = opendir($dir))
-	{
-		while (false !== ($file = readdir($handle)))
-		{
-			if ((($file == "." || $file == "..") && !$skipDots) || ($file != "." && $file != ".."))
-			{
-				if (!$listDirectories && is_dir($file))
-					continue;
-
-				array_push($dirArray, basename($file));
-			}
-		}
-
-		closedir($handle);
-	}
-
-	return $dirArray;
+  return $dirArray;
 }
 
 function getfriendid($pszAuthID) {
@@ -164,9 +154,7 @@ function getppm($__points, $__playtime)
 
 function getserversettingsvalue($name)
 {
-	global $mysql_tableprefix;
-
-	$q = "SELECT svalue FROM " . $mysql_tableprefix . "server_settings WHERE sname = '" . mysql_real_escape_string($name) . "'";
+	$q = "SELECT svalue FROM server_settings WHERE sname = '" . mysql_real_escape_string($name) . "'";
 	$res = mysql_query($q);
 
 	if ($res && mysql_num_rows($res) == 1 && ($r = mysql_fetch_array($res)))
@@ -420,23 +408,9 @@ if (basename($_SERVER['PHP_SELF']) !== "createtable.php" && basename($_SERVER['P
 	}
 }
 
-$con_ip2c = 0;
-if (strlen($mysql_ip2c_server) > 0)
-{
-	$con_ip2c = mysql_connect($mysql_ip2c_server, $mysql_ip2c_user, $mysql_ip2c_password);
-	mysql_select_db($mysql_ip2c_db, $con_ip2c);
-	mysql_query("SET NAMES 'utf8'", $con_ip2c);
-}
-
 $con_main = mysql_connect($mysql_server, $mysql_user, $mysql_password);
 mysql_select_db($mysql_db, $con_main);
 mysql_query("SET NAMES 'utf8'", $con_main);
-
-if (!$con_ip2c)
-	$con_ip2c = $con_main;
-
-$ip2c->set_connection($con_ip2c);
-
 $coop_campaigns = array();
 $versus_campaigns = array();
 $realism_campaigns = array();
@@ -708,120 +682,6 @@ else
 					   "" => "Custom Maps (L4D2)");
 }
 
-// Fix the site name
-$site_name = htmlentities($site_name);
-$game_locations = array();
-$international = false;
-$game_country_code_last = "NULL";
-
-// http://developer.valvesoftware.com/wiki/Steam_browser_protocol
-if (isset($game_addresses))
-{
-	foreach($game_addresses as $game_info)
-	{
-		if (count($game_info) != 2)
-			continue;
-
-		$game_name = htmlentities($game_info[0], ENT_COMPAT, "UTF-8");
-		$game_address = $game_info[1];
-
-		if (strlen($game_address) > 0)
-		{
-			$game_ip = "";
-			$game_lon = 0.0;
-			$game_lat = 0.0;
-			$game_flag = "";
-			$game_country_code = "";
-
-			if ($showplayerflags)
-			{
-				$game_adderss_split = split(":", $game_address);
-
-				$ip_classes = split(".", $game_adderss_split[0]);
-
-				if (count($ip_classes) != 4)
-					$game_ip = gethostbyname($game_adderss_split[0]);
-				else
-				{
-					$all_numeric = true;
-
-					foreach ($ip_classes as $ip_class)
-						if (!is_numeric($ip_class) || $ip_class < 0 || $ip_class > 255)
-						{
-							$all_numeric = false;
-							break;
-						}
-
-					if ($all_numeric)
-						$game_ip = $game_adderss_split[0];
-					else
-						$game_ip = gethostbyname($game_adderss_split[0]);
-				}
-
-				$game_country_code = strtolower($ip2c->get_country_code($game_ip));
-
-				$game_lat = $ip2c->get_latitude($game_ip);
-				$game_lon = $ip2c->get_longitude($game_ip);
-
-				if ($game_country_code != "" && $game_country_code != "xx" && $game_country_code != "int" && file_exists("./images/flags/" . $game_country_code . ".gif"))
-				{
-					if (!$international && $game_country_code_last != "NULL" && $game_country_code != $game_country_code_last)
-						$international = true;
-
-					$game_country_code_last = $game_country_code;
-
-					$game_flag = $ip2c->get_country_flag($game_ip);
-				}
-				else
-					$international = true;
-			}
-			else
-				$international = true;
-
-			if (!isset($motd_page))
-			{
-				$link = "steam://connect/" . str_replace(array("\"", "/"), "", $game_address);
-				$game_location = array("country_code" => $game_country_code, "flag" => $game_flag, "link" => $link, "title" => $game_flag . "<a href=\"" . $link . "\">" . $game_name . "</a>", "lat" => $game_lat, "lon" => $game_lon);
-			}
-			else
-			{
-				$link = "";
-				$game_location = array("country_code" => $game_country_code, "flag" => $game_flag, "link" => $link, "title" => $game_flag . $game_name, "lat" => $game_lat, "lon" => $game_lon);
-			}
-
-			$game_locations[] = $game_location;
-		}
-	}
-}
-
-$locations = count($game_locations);
-
-if ($locations == 1 || isset($motd_page))
-{
-	if (!isset($motd_page))
-		$site_name = (!$international ? $game_locations[0]["flag"] : "") . "<a href=\"" . $game_locations[0]["link"] . "\">" . $site_name . "</a>";
-	else
-		$site_name = (!$international ? $game_locations[0]["flag"] : "") . $site_name;
-}
-else if ($locations > 1)
-{
-	$game_locations_html = "";
-
-	foreach ($game_locations as $game_location)
-	{
-		if (strlen($game_locations_html))
-			$game_locations_html .= "<br />";
-		$game_locations_html .= $game_location["title"];
-	}
-
-	$game_locations_html = str_replace("&", "&amp;", $game_locations_html);
-	$game_locations_html = str_replace("\"", "&#34;", $game_locations_html);
-	$game_locations_html = str_replace("'", "&#92;&#39;", $game_locations_html);
-	$game_locations_html = str_replace("\\", "&#92;&#92;", $game_locations_html);
-
-	$site_name = (!$international ? $game_locations[0]["flag"] : "") . "<a href=\"javascript:void();\" onmouseover=\"showcmb(this, '" . $game_locations_html . "');\" onmouseout=\"hidecmb();\">" . $site_name . "</a>";
-}
-
 $realismlink = "";
 $scavengelink = "";
 $realismversuslink = "";
@@ -859,7 +719,7 @@ if ($timedmaps_show_all)
 $header_extra = array();
 $header_extra['Zombies Killed'] = 0;
 $header_extra['Players Served'] = 0;
-$result = mysql_query("SELECT COUNT(*) AS players_served, sum(kills) AS total_kills FROM " . $mysql_tableprefix . "players");
+$result = mysql_query("SELECT COUNT(*) AS players_served, sum(kills) AS total_kills FROM players");
 if ($result && $row = mysql_fetch_array($result))
 {
 	$header_extra['Zombies Killed'] = $row['total_kills'];
@@ -869,50 +729,29 @@ if ($result && $row = mysql_fetch_array($result))
 $i = 1;
 $top10 = array();
 
-$result = mysql_query("SELECT * FROM " . $mysql_tableprefix . "players ORDER BY " . $TOTALPOINTS . " DESC LIMIT 10");
-if ($result && mysql_num_rows($result) > 0)
-{
-	while ($row = mysql_fetch_array($result)) {
-		// This character is A PAIN... Find out how to convert it in to a HTML entity!
-		// http://www.fileformat.info/info/unicode/char/06d5/index.htm
-		// Maybe it's the same with all Arabic characters???? From right to left type of writing.
+$result = mysql_query('SELECT * FROM players ORDER BY '.$TOTALPOINTS.' DESC LIMIT 10');
+if ($result && mysql_num_rows($result) > 0) {
+  while ($row = mysql_fetch_array($result)) {
+    $name = htmlentities($row['name'], ENT_COMPAT, 'UTF-8');
+    $avatarimg = '';
+    $playerheadline = '';
 
-		$name = htmlentities($row['name'], ENT_COMPAT, "UTF-8");
-		//$name = str_replace("" , "&#1749;", $name);
-		//$titlename = str_replace("\"" , "\\\"", $name);
+    if ($steam_profile_read && $i <= $top10players_additional_info) {
+      $playersteamprofile = getplayersteamprofilexml($row['steamid']);
 
-		$avatarimg = "";
-		$playerheadline = "";
+      if ($playersteamprofile) {
+        $avatarimgurl = parseplayeravatar($playersteamprofile, 'icon');
 
-		if ($steam_profile_read && $i <= $top10players_additional_info)
-		{
-			$playersteamprofile = getplayersteamprofilexml($row['steamid']);
+        if ($avatarimgurl)
+          $avatarimg = '<img src="'.$avatarimgurl.'" border="0">';
+        $playerheadline = htmlentities(parseplayerheadline($playersteamprofile), ENT_COMPAT, 'UTF-8');
+      }
+    }
+    $country_code = strtolower($geoip->country($row['ip'])->country->isoCode);
+    $playername = '<img src="images/flags/'.$country_code.'.gif" alt="'.$country_code.'"> <a href="player.php?steamid='.$row['steamid'].'">'.$name.'</a>';
 
-			if ($playersteamprofile)
-			{
-				if ($players_avatars_show)
-				{
-					$avatarimgurl = parseplayeravatar($playersteamprofile, "icon");
-
-					if($avatarimgurl)
-					{
-						$avatarimg = "<img src=\"" . $avatarimgurl . "\" border=\"0\">";
-					}
-				}
-
-				$playerheadline = htmlentities(parseplayerheadline($playersteamprofile), ENT_COMPAT, "UTF-8");
-			}
-		}
-
-		// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-		$country_record = $geoip->country($row['ip']);
-
-		$playername = ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid'] . "\">" . $name . "</a>";
-
-		if ($playerheadline)
-		{
-			$playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td rowspan=\"2\">&nbsp;</td><td>" . $playername . "</td></tr><tr><td class=\"summary\">" . $playerheadline . "</td></tr></table>";
-		}
+    if ($playerheadline)
+      $playername = '<table border=0 cellspacing=0 cellpadding=0 class="top10"><tr><td rowspan="2">&nbsp;</td><td>'.$playername.'</td></tr><tr><td class="summary">'.$playerheadline.'</td></tr></table>';
 
 		if ($avatarimg)
 		{
@@ -942,52 +781,43 @@ if ($result && mysql_num_rows($result) > 0)
 	}
 }
 
-$arr_templatefiles = php4_scandir($templatesdir_default);
+$arr_templatefiles = php_scandir($templatesdir_default);
 $templatefiles = array();
-
-foreach ($arr_templatefiles as $file)
-{
-	$templatefiles[$file] = "default/" . $file;
+foreach ($arr_templatefiles as $file) {
+  $templatefiles[$file] = "default/" . $file;
 }
 
-$arr_templatefiles = php4_scandir($imagesdir_default);
+$arr_templatefiles = php_scandir($imagesdir_default);
 $imagefiles = array();
-
-foreach ($arr_templatefiles as $file)
-{
-	$imagefiles[$file] = "default/images/" . $file;
+foreach ($arr_templatefiles as $file) {
+  $imagefiles[$file] = "default/images/" . $file;
 }
 
-if ($site_template != "" && $site_template != "default")
-{
-	$arr_templatefiles = php4_scandir($templatesdir . "/" . $site_template);
+if ($site_template != "" && $site_template != "default") {
+  $arr_templatefiles = php_scandir($templatesdir . "/" . $site_template);
 
-	foreach ($arr_templatefiles as $file)
-	{
-		if (!is_dir($file))
-			$templatefiles[$file] = $site_template . "/" . $file;
-	}
+  foreach ($arr_templatefiles as $file) {
+    if (!is_dir($file))
+      $templatefiles[$file] = $site_template . "/" . $file;
+  }
 
-	$imagespath = $templatesdir . "/" . $site_template . "/images";
+  $imagespath = $templatesdir . "/" . $site_template . "/images";
 
-	if (file_exists($imagespath) && is_dir($imagespath))
-	{
-		$arr_templatefiles = php4_scandir($imagespath);
+  if (file_exists($imagespath) && is_dir($imagespath)) {
+    $arr_templatefiles = php_scandir($imagespath);
 
-		foreach ($arr_templatefiles as $file)
-		{
-			if (!is_dir($file))
-				$imagefiles[$file] = $site_template . "/images/" . $file;
-		}
-	}
+    foreach ($arr_templatefiles as $file) {
+      if (!is_dir($file))
+        $imagefiles[$file] = $site_template . "/images/" . $file;
+    }
+  }
 }
 
-$motd_message = htmlentities(getserversettingsvalue("motdmessage"), ENT_COMPAT, "UTF-8");
-$layout_motd = "";
-if ($show_motd && strlen($motd_message) > 0)
-{
-	$tpl_msg = new Template("./templates/" . $templatefiles['layout_motd.tpl']);
-	$tpl_msg->set("motd_message", $motd_message);
-	$layout_motd = $tpl_msg->fetch("./templates/" . $templatefiles['layout_motd.tpl']);
+$motd_message = htmlentities(getserversettingsvalue('motdmessage'), ENT_COMPAT, 'UTF-8');
+$layout_motd = '';
+if (strlen($motd_message) > 0) {
+  $tpl_msg = new Template('templates/'.$templatefiles['layout_motd.tpl']);
+  $tpl_msg->set('motd_message', $motd_message);
+  $layout_motd = $tpl_msg->fetch('templates/'.$templatefiles['layout_motd.tpl']);
 }
 ?>

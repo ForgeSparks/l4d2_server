@@ -34,13 +34,13 @@ p, ul, ol {
 }
 
 a:link {
-	color: #FFCC33;
+  color: #FFCC33;
 	font-weight: bold;
 	text-decoration: none;
 }
 
 a:visited {
-	color: #FFCC33;
+  color: #FFCC33;
 	font-weight: bold;
 	text-decoration: none;
 }
@@ -63,19 +63,19 @@ a:hover, a:active {
         width: 110px;
         margin-right: 5px;
         padding: 2px;
-        border: 1px solid #FFCC33;
+        border: 1px solid #DD2222;
         background: #000000;
-        color: #FFCC33;
+        color: #DD2222;
 }
 
 #x {
         padding: 4px 4px;
         background: #000000;
-        border: 1px solid #FFCC33;
+        border: 1px solid #DD2222;
         text-transform: uppercase;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 10px;
-        color: #FFCC33;
+        color: #DD2222;
 }
 
 /* Form */
@@ -96,18 +96,18 @@ input, textarea, select {
 	width: 300px;
 	margin-right: 5px;
 	padding: 2px;
-	border: 1px solid #FFCC33;
+	border: 1px solid #DD2222;
 	background: #000000;
-	color: #FFCC33;
+	color: #DD2222;
 }
 
 #button {
 	padding: 4px 4px;
 	background: #000000;
-	border: 1px solid #FFCC33;
+	border: 1px solid #DD2222;
 	text-transform: uppercase;
 	font-family: Arial, Helvetica, sans-serif;
-	color: #FFCC33;
+	color: #DD2222;
 }
 
 /* Header */
@@ -159,7 +159,7 @@ input, textarea, select {
 .post .title {
         margin-bottom: 20px;
         margin-top: 20px;
-        border-bottom: 1px solid #FFCC33;
+        border-bottom: 1px solid #DD2222;
 }
 
 .post .entry ul {
@@ -171,7 +171,7 @@ input, textarea, select {
 }
 
 .post .meta {
-        border: 1px solid #FFCC33;
+        border: 1px solid #DD2222;
         padding: 8px 10px 24px 10px;
 }
 
@@ -270,7 +270,7 @@ table.awardbox td {
 
 #sidebar h2 {
 	margin-bottom: 10px;
-	border-bottom: 1px solid #FFCC33;
+	border-bottom: 1px solid #DD2222;
 	font-size: 16px;
 }
 
@@ -350,6 +350,6 @@ a.special:visited {
 }
 
 a.special:hover, a.special:active {
-	color: #DD2222;
+	color: #FFCC33;
 	text-decoration: none;
 }

@@ -109,7 +109,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 		$award_display_players = 1;
 	}
 
-	$query = "SELECT *" . $extrasql . " FROM " . $mysql_tableprefix . "players WHERE (" . $real_playtime_sql . ") >= " . $award_minplaytime . " ORDER BY (" . $real_points . " / " . $real_playtime . ") DESC LIMIT " . $award_display_players;
+	$query = "SELECT *" . $extrasql . " FROM players WHERE (" . $real_playtime_sql . ") >= " . $award_minplaytime . " ORDER BY (" . $real_points . " / " . $real_playtime . ") DESC LIMIT " . $award_display_players;
 	$result = mysql_query($query);
 
 	if ($result && mysql_num_rows($result) > 0)
@@ -124,7 +124,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$table_body .= "<tr><td>" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_ppm, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), number_format($row[$real_points] / $row[$real_playtime], 2));
+				$table_body .= "<tr><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_ppm, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), number_format($row[$real_points] / $row[$real_playtime], 2));
 			}
 			else
 			{
@@ -132,14 +132,14 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$table_body .= "<br />\n<i style=\"font-size: 12px;\">" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), number_format($row[$real_points] / $row[$real_playtime], 2)) . "</i>";
+				$table_body .= "<br />\n<i style=\"font-size: 12px;\"><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), number_format($row[$real_points] / $row[$real_playtime], 2)) . "</i>";
 			}
 		}
 
 		$table_body .= "</td></tr>\n";
 	}
 
-	$query = "SELECT *" . $extrasql . " FROM " . $mysql_tableprefix . "players WHERE (" . $real_playtime_sql . ") >= " . $award_minplaytime . " ORDER BY " . $real_playtime . " DESC LIMIT " . $award_display_players;
+	$query = "SELECT *" . $extrasql . " FROM players WHERE (" . $real_playtime_sql . ") >= " . $award_minplaytime . " ORDER BY " . $real_playtime . " DESC LIMIT " . $award_display_players;
 	$result = mysql_query($query);
 
 	if ($result && mysql_num_rows($result) > 0)
@@ -154,7 +154,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$table_body .= "<tr><td>" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_time, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), formatage($row[$real_playtime] * 60));
+				$table_body .= "<tr><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_time, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), formatage($row[$real_playtime] * 60));
 			}
 			else
 			{
@@ -162,7 +162,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$table_body .= "<br />\n<i style=\"font-size: 12px;\">" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), formatage($row[$real_playtime] * 60)) . "</i>";
+				$table_body .= "<br />\n<i style=\"font-size: 12px;\"><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), formatage($row[$real_playtime] * 60)) . "</i>";
 			}
 		}
 
@@ -171,7 +171,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 
 	$headshotratiosql = $real_playtime_sql . " >= " . $award_minplaytime . " AND " . $real_points_sql . " >= " . $award_minpoints . " AND kills >= " . $award_minkills . " AND headshots >= " . $award_minheadshots;
 
-	$query = "SELECT *" . $extrasql . " FROM " . $mysql_tableprefix . "players WHERE " . $headshotratiosql . " ORDER BY (headshots/kills) DESC LIMIT " . $award_display_players;
+	$query = "SELECT *" . $extrasql . " FROM players WHERE " . $headshotratiosql . " ORDER BY (headshots/kills) DESC LIMIT " . $award_display_players;
 	$result = mysql_query($query);
 
 	if ($result && mysql_num_rows($result) > 0)
@@ -191,7 +191,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$table_body .= "<tr><td>" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_ratio, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), number_format($row['headshots'] / $row['kills'], 4) * 100);
+				$table_body .= "<tr><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_ratio, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), number_format($row['headshots'] / $row['kills'], 4) * 100);
 			}
 			else
 			{
@@ -199,7 +199,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$table_body .= "<br />\n<i style=\"font-size: 12px;\">" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), (number_format($row['headshots'] / $row['kills'], 4) * 100) . "&#37;") . "</i>";
+				$table_body .= "<br />\n<i style=\"font-size: 12px;\"><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), (number_format($row['headshots'] / $row['kills'], 4) * 100) . "&#37;") . "</i>";
 			}
 		}
 
@@ -211,7 +211,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 
 		$awardsql = ($award !== "award_teamkill" || $award !== "award_friendlyfire") ? " WHERE " . $real_playtime_sql . " >= " . $award_minplaytime . " AND " . $real_points_sql . " >= " . $award_minpointstotal : "";
 
-		$query = "SELECT name, steamid, ip, " . $award . " AS queryvalue" . $extrasql . " FROM " . $mysql_tableprefix . "players " . $awardsql . " ORDER BY " . $award . " DESC LIMIT " . $award_display_players;
+		$query = "SELECT name, steamid, ip, " . $award . " AS queryvalue" . $extrasql . " FROM players " . $awardsql . " ORDER BY " . $award . " DESC LIMIT " . $award_display_players;
 		$result = mysql_query($query);
 
 		if ($result && mysql_num_rows($result) > 0)
@@ -226,7 +226,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 					// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 					$country_record = $geoip->country($row['ip']);
 
-					$table_body .= "<tr><td>" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($awardstring, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), number_format($row['queryvalue']));
+					$table_body .= "<tr><td><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($awardstring, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), number_format($row['queryvalue']));
 				}
 				else
 				{
@@ -234,7 +234,7 @@ if ($cachedate < time() - (60*$award_cache_refresh)) {
 					// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 					$country_record = $geoip->country($row['ip']);
 
-					$table_body .= "<br />\n<i style=\"font-size: 12px;\">" . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), number_format($row['queryvalue'])) . "</i>";
+					$table_body .= "<br />\n<i style=\"font-size: 12px;\"><img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " . sprintf($award_second, "player.php?steamid=" . $row['steamid'], htmlentities($row['name'], ENT_COMPAT, "UTF-8"), addordinalnumbersuffix($i), number_format($row['queryvalue'])) . "</i>";
 				}
 			}
 

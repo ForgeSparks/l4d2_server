@@ -42,7 +42,7 @@ if (strlen($motd_message) > 0)
 	$tpl->set("motd_message", $tpl_msg->fetch("./templates/" . $templatefiles['motd_message.tpl']));
 }
 
-$result = mysql_query("SELECT * FROM " . $mysql_tableprefix . "players ORDER BY " . $TOTALPOINTS . " DESC LIMIT 10");
+$result = mysql_query("SELECT * FROM players ORDER BY " . $TOTALPOINTS . " DESC LIMIT 10");
 if ($result && mysql_num_rows($result) > 0)
 {
 	$top10 = array();
@@ -61,8 +61,8 @@ if ($result && mysql_num_rows($result) > 0)
 		// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 		$country_record = $geoip->country($row['ip']);
 
-		$top10[] = array("rank" => $i++, 
-										 "flag" => ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : ""),
+		$top10[] = array("rank" => $i++,
+										 "flag" => "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> ",
 										 "name" => $name,
 										 "score" => gettotalpointsraw($row));
 	}
@@ -78,7 +78,7 @@ $real_points_sql = $TOTALPOINTS;
 $real_points = "real_points";
 $extrasql = ", " . $real_points_sql . " as " . $real_points . ", " . $real_playtime_sql . " as " . $real_playtime;
 
-$query = "SELECT *" . $extrasql . " FROM " . $mysql_tableprefix . "players WHERE (" . $real_playtime_sql . ") >= " . $award_minplaytime . " ORDER BY (" . $real_points . " / " . $real_playtime . ") DESC LIMIT 5";
+$query = "SELECT *" . $extrasql . " FROM players WHERE (" . $real_playtime_sql . ") >= " . $award_minplaytime . " ORDER BY (" . $real_points . " / " . $real_playtime . ") DESC LIMIT 5";
 $result = mysql_query($query);
 
 if ($result && mysql_num_rows($result) > 0)
@@ -100,7 +100,7 @@ if ($result && mysql_num_rows($result) > 0)
 		$country_record = $geoip->country($row['ip']);
 
 		$topppm[] = array("rank" => $i++,
-										 "flag" => ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : ""),
+										 "flag" => "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> ",
 										 "name" => $name,
 										 "score" => $row[$real_points] / $row[$real_playtime]);
 	}

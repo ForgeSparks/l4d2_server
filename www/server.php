@@ -99,7 +99,7 @@ $players_sql = "
 		SUM(scavenge_kills_survivors) AS scavenge_kills_survivors,
 		SUM(versus_kills_survivors) AS versus_kills_survivors
 	FROM
-		" . $mysql_tableprefix . "players
+		players
 ";
 
 $result = mysql_query($players_sql) or die("Error: " . mysql_error());
@@ -279,7 +279,7 @@ $maps_sql = "
 		SUM(points_infected_adv) AS points_infected_adv,
 		SUM(points_infected_exp) AS points_infected_exp
 	FROM
-		" . $mysql_tableprefix . "maps
+		maps
 	WHERE
 		playtime_nor + playtime_adv + playtime_exp > 0
 	GROUP BY

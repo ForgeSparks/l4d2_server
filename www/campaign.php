@@ -141,25 +141,25 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	    $tpl->set("page_heading", "Invalid Campaign"); // Page header
 
-	
+
 
 	    $output = "You have selected an invalid campaign. Please go back, and report this error to the site administrator. Thank you.";
 
 	    $tpl->set("body", trim($output));
 
-	
+
 
 	    // Output the top 10
 
 	    $tpl->set("top10", $top10);
 
-	
+
 
 	    // Print out the page!
 
 	    echo $tpl->fetch("./templates/" . $templatefiles['layout.tpl']);
 
-	
+
 
 	    exit;
 
@@ -175,9 +175,9 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	$totalkills = 0;
 
-	$query = "SELECT * FROM " . $mysql_tableprefix . "maps";
+	$query = "SELECT * FROM maps";
 
-	
+
 
 	if (strlen($campaign) > 0)
 
@@ -193,7 +193,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	$query .= " ORDER BY name ASC";
 
-	
+
 
 	$result = mysql_query($query);
 
@@ -203,7 +203,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 			$points = array($row['points_nor'], $row['points_adv'], $row['points_exp'], $row['points_nor'] + $row['points_adv'] + $row['points_exp']);
 
-			
+
 
 	    $stats = new Template("./templates/" . $templatefiles['page.tpl']);
 
@@ -225,7 +225,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                          formatage($playtime[3] * 60));
 
-	
+
 
 	  	$points_arr = array(number_format($points[0]),
 
@@ -235,7 +235,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                        number_format($points[3]));
 
-	
+
 
 	    $points_infected_arr = array(number_format($row['points_infected_nor']),
 
@@ -245,7 +245,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                        number_format($row['points_infected_nor'] + $row['points_infected_adv'] + $row['points_infected_exp']));
 
-	
+
 
 	    $kills_arr = array(number_format($row['kills_nor']),
 
@@ -255,7 +255,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                       number_format($row['kills_nor'] + $row['kills_adv'] + $row['kills_exp']));
 
-	
+
 
 	    $survivor_kills_arr = array(number_format($row['survivor_kills_nor']),
 
@@ -265,7 +265,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                       number_format($row['survivor_kills_nor'] + $row['survivor_kills_adv'] + $row['survivor_kills_exp']));
 
-	
+
 
 	    $infected_win_arr = array(number_format($row['infected_win_nor']),
 
@@ -275,7 +275,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                          number_format($row['infected_win_nor'] + $row['infected_win_adv'] + $row['infected_win_exp']));
 
-	
+
 
 	    $restarts_arr = array(number_format($row['restarts_nor']),
 
@@ -285,7 +285,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	                          number_format($row['restarts_nor'] + $row['restarts_adv'] + $row['restarts_exp']));
 
-	
+
 
 			$ppm_arr = array(number_format(getppm($points[0], $playtime[0]), 2),
 
@@ -295,11 +295,11 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 											 number_format(getppm($points[3], $playtime[3]), 2));
 
-			
+
 
 	    $totalkills = $totalkills + ($row['kills_nor'] + $row['kills_adv'] + $row['kills_exp']);
 
-	
+
 
 	    $map->set("playtime", $playtime_arr);
 
@@ -319,7 +319,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	    $body = $map->fetch("./templates/" . $templatefiles["maps_detailed_" . $type . ".tpl"]);
 
-	
+
 
 	    $stats->set("page_body", $body);
 
@@ -327,7 +327,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 	}
 
-	
+
 
 	$campaignpop = getpopulation($totalkills, $population_file, False);
 
@@ -343,13 +343,13 @@ else
 
 	$output = "<h1>Illegal gamemode</h1>";
 
-	
+
 
 $tpl->set("body", $output);
 
 
 
-// Output the top 10 
+// Output the top 10
 
 $tpl->set("top10", $top10);
 
@@ -366,4 +366,3 @@ $tpl->set("motd_message", $layout_motd);
 echo $tpl->fetch("./templates/" . $templatefiles['layout.tpl']);
 
 ?>
-

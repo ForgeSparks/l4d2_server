@@ -45,7 +45,7 @@ if (mysql_error()) {
 
 } else if (!$timedmaps_show_all && !(strlen($id) > 0 || strlen($mapprefix) > 0 && strlen($gamemode) > 0)) {
 	$fulloutput = "<p><b>You must provide a player <a href=\"http://developer.valvesoftware.com/wiki/SteamID\" target=\"_blank\">Steam ID</a> or proper map info to display Timed Maps statistics!</b></p>\n";
-	
+
 } else {
 	$forstart = 0;
 	$forstop = 6;
@@ -103,13 +103,13 @@ if (mysql_error()) {
 				continue;
 
 			$arr_maprunners = array();
-			
+
 			$stats = new Template("./templates/" . $templatefiles['page.tpl']);
 			$stats->set("page_subject", $title);
 
 			$maprun = new Template("./templates/" . $templatefiles['timedmaps.tpl']);
-	
-			$query = "SELECT m1.*, p.name, p.ip FROM " . $mysql_tableprefix . "timedmaps AS m1 INNER JOIN " . $mysql_tableprefix . "players AS p ON m1.steamid = p.steamid INNER JOIN " . $mysql_tableprefix . "maps AS m2 ON m1.map = m2.name AND m1.gamemode = m2.gamemode";
+
+			$query = "SELECT m1.*, p.name, p.ip FROM timedmaps AS m1 INNER JOIN players AS p ON m1.steamid = p.steamid INNER JOIN maps AS m2 ON m1.map = m2.name AND m1.gamemode = m2.gamemode";
 			if (strlen($prefix) > 0)
 				$query .= " WHERE m1.map like '" . $prefix . "%' and m2.custom = 0";
 			else
@@ -127,7 +127,7 @@ if (mysql_error()) {
 
 				$line = "<tr"; // onmouseover=\"showtip('test');\" onmouseout=\"hidetip();\"";
 				$line .= ($i++ & 1) ? ">" : " class=\"alt\">";
-		
+
 				if ($previous_map != $row['map'])
 				{
 					$starttag = "<b>";
@@ -171,7 +171,7 @@ if (mysql_error()) {
 						$gamemode = "Mutations";
 						break;
 				}
-		
+
 				$line .= "<td>" . $starttag . "(" . $gamemode . ") " . $row['map'] . $endtag . "</td>";
 /*
 				switch ($row['gamemode'])
@@ -179,15 +179,15 @@ if (mysql_error()) {
 					case 0:
 						$line .= "<td>" . $starttag . "Co-op" . $endtag . "</td>";
 						break;
-		
+
 					case 1:
 						$line .= "<td>" . $starttag . "Versus" . $endtag . "</td>";
 						break;
-		
+
 					case 2:
 						$line .= "<td>" . $starttag . "Realism" . $endtag . "</td>";
 						break;
-		
+
 					default:
 						$line .= "<td>" . $starttag . "UNKNOWN" . $endtag . "</td>";
 						break;
@@ -197,9 +197,9 @@ if (mysql_error()) {
 				// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
 				$country_record = $geoip->country($row['ip']);
 
-				$line .= "<td>" . $starttag . ($showplayerflags ? "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> " : "") . "<a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a>" . $endtag . "</td>";
+				$line .= "<td>" . $starttag . "<img src=\"images/flags/" . strtolower($country_record->country->isoCode) . ".gif\" alt=\"" . strtolower($country_record->country->isoCode) . "\"> <a href=\"player.php?steamid=" . $row['steamid']. "\">" . htmlentities($row['name'], ENT_COMPAT, "UTF-8") . "</a>" . $endtag . "</td>";
 				$line .= "<td>" . $starttag . $difficulty . $endtag . "</td>";
-		
+
 				$thetime = "";
 				//$time = $row['time'] - ($row['time'] % 60);
 				//if ($time > 0)
@@ -207,19 +207,19 @@ if (mysql_error()) {
 				//$thetime .= ($row['time'] % 60) . "s";
 				$thetime = formatage($row['time']);
 				$line .= "<td>" . $starttag . $thetime . $endtag . "</td>";
-		
+
 				$line .= "</tr>\n";
-		
+
 				$arr_maprunners[] = $line;
-		
+
 				$previous_map = $row['map'];
 			}
-		
+
 			if (mysql_num_rows($result) == 0) $arr_maprunners[] = "<tr><td colspan=\"3\" align=\"center\">There are no map timings!</td</tr>\n";
-		
+
 			$maprun->set("maprunners", $arr_maprunners);
 			$body = $maprun->fetch("./templates/" . $templatefiles['timedmaps.tpl']);
-			
+
 			$stats->set("page_body", $body);
 			$stats->set("page_link", "<a href=\"timedmaps.php?gamemode=" . $j . "&id=" . $prefix . "\">View Full Stats for " . $title . "</a>");
 
@@ -230,7 +230,7 @@ if (mysql_error()) {
 
 $tpl->set('body', trim($fulloutput));
 
-// Output the top 10 
+// Output the top 10
 $tpl->set("top10", $top10);
 
 // Output the MOTD

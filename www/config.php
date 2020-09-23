@@ -6,19 +6,10 @@ Configuration file - "config.php"
 */
 
 // MySQL information for L4D Stats DB
-$mysql_server = "database";
+$mysql_server = "localhost";
 $mysql_db = "l4d2_stats";
-$mysql_user = "l4d2_stats";
-$mysql_password = "<password>";
-$mysql_tableprefix = "";
-
-// MySQL information for IP to Country DB
-// Fill this information only if a separate database is used
-$mysql_ip2c_server = "";
-$mysql_ip2c_db = "";
-$mysql_ip2c_user = "";
-$mysql_ip2c_password = "";
-$mysql_ip2c_tableprefix = "";
+$mysql_user = "root";
+$mysql_password = "";
 
 // Heading for the stats page.
 $site_name = "ForgeSparks";
@@ -47,10 +38,6 @@ $site_template = "";
 $award_file = "awards.en.php";
 $award_l4d2_file = "awards.l4d2.en.php";
 
-// Refresh interval (seconds) for the front page (index.php)
-// 0 = disabled
-$stats_refreshinterval = 0;
-
 // Minimum playtime and points required to be eligible for any awards, in minutes
 $award_minplaytime = 60;
 $award_minpointstotal = 0;
@@ -76,45 +63,6 @@ $dbtimemod = 0;
 // http://www.php.net/manual/en/function.date.php
 // Example: 24h - "M d, Y H:i";
 $lastonlineformat = "M d, Y g:ia";
-
-// Show player flags next to their names based on their IP
-// 0 to disable
-// Installation instructions:
-//   1. Download and extract http://www.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip to web stats root (same folder as updatetable.php)
-//   2. Execute install.php (use a web browser) - BE PATIENT AND WAIT FOR THE EXECUTION TO FINISH!
-//   3. Delete files GeoIPCountryCSV.zip and GeoIPCountryWhois.csv when installation is successful
-$showplayerflags = 0;
-
-// Show player city name next to their flag and country name (player.php) based on their IP (has no effect when $showplayerflags = 0)
-// 0 to disable
-// Installation instructions:
-//   1. Download latest GeoLiteCity_YYYYMMDD.zip from http://www.maxmind.com/app/geolitecity and extract the files to web stats root (same folder as updatetable.php)
-//   2. Execute install.php (use a web browser) - BE PATIENT AND WAIT FOR THE EXECUTION TO FINISH!
-//   3. Delete files GeoLiteCity_YYYYMMDD.zip, GeoLiteCity-Blocks.csv and GeoLiteCity-Location.csv when installation is successful
-$showplayercity = 0;
-
-// Google Maps (player.php) additional URL parameters (URL postfix)
-// Default: "&t=h&z=5"
-//   Examples: (there is more!)
-//     t => h = Satellite with labels / k = Satellite without labels / p = Terrain
-//     z => Zoom factor
-//     lci => com.panoramio.all = Photos / org.wikipedia.en = Wikipedia / com.youtube.all = Videos (combined with comma)
-// Try out the usable parameters yourself
-$googlemaps_addparam = "&t=h&z=5";
-
-// Google Maps (index.php) API key (get yours from http://code.google.com/apis/maps/signup.html)
-$googlemaps_apikey = "";
-
-// Show Google Maps (index.php) location for the first # players online (useful when web stats hosts multiple game servers)
-// 0 to show all players
-$googlemaps_showplayersonlinecount = 0;
-
-// Google Maps (index.php) players online additional URL parameters (URL postfix)
-// Default: "&size=600x300&maptype=satellite&sensor=false"
-$googlemaps_playersonline_addparam = "&size=600x300&maptype=satellite&sensor=false";
-
-// Google Maps (index.php) zoom when only one players online (or only server is displayed)
-$googlemaps_playersonline_zoom = 3;
 
 /*
 Population CSV file. This is taken from the United States Census Bureau, you
@@ -154,19 +102,13 @@ $timedmaps_show_all = False;
 // Warning! Setting value to true can slow loading of some pages.
 $steam_profile_read = True;
 
-// Show/hide player avatars (overrides all other avatar related if set to False)
-$players_avatars_show = True;
-
 // Show/hide online player avatars
 // Warning! Setting value to true will slow down the index page some, depending how
 // many players are currently online.
-$players_online_avatars_show = False;
+$players_online_avatars_show = True;
 
 // Number of players to show additional info at Top 10 -players list (set to 0 to disable)
 // Shows player avatar and some other information.
 // Warning! Setting a number higher than 0 (zero) will slow every page load a little.
 $top10players_additional_info = 0;
-
-// Show Message Of The Day in each page
-$show_motd = True;
 ?>
