@@ -24,11 +24,6 @@ function addordinalnumbersuffix($num)
 // Include the primary PHP functions file
 include("./common.php");
 
-// PHP 7.4 COUNTRY FIX BY PRIMEAS.DE
-require_once("geoip2.phar");
-use GeoIp2\Database\Reader;
-$geoip = new Reader('GeoLite2-Country.mmdb');
-
 // Load outer template
 $tpl = new Template("./templates/" . $templatefiles['layout.tpl']);
 

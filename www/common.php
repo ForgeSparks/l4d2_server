@@ -425,7 +425,8 @@ $coop_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $versus_campaigns = array("c1m" => "Dead Center",
@@ -440,7 +441,8 @@ $versus_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $survival_campaigns = array("c1m" => "Dead Center",
@@ -455,7 +457,8 @@ $survival_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $scavenge_campaigns = array("c1m" => "Dead Center",
@@ -470,7 +473,8 @@ $scavenge_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $realism_campaigns = array("c1m" => "Dead Center",
@@ -485,7 +489,8 @@ $realism_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $realismversus_campaigns = array("c1m" => "Dead Center",
@@ -500,7 +505,8 @@ $realismversus_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $mutations_campaigns = array("c1m" => "Dead Center",
@@ -515,7 +521,8 @@ $mutations_campaigns = array("c1m" => "Dead Center",
 				   "c10m" => "Death Toll",
 				   "c11m" => "Dead Air",
 				   "c12m" => "Blood Harvest",
-				   "c13m" => "Cold Stream",
+           "c13m" => "Cold Stream",
+           "c14m" => "The Last Stand",
 				   "" => "Custom Maps");
 
 $realismlink = "";
