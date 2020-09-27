@@ -25,10 +25,6 @@ $game_version = 2;
 // Usage: "mytemplate" (requires directory ./templates/mytemplate existence)
 $site_template = "";
 
-// Award definitions file
-$award_file = "awards.en.php";
-$award_l4d2_file = "awards.l4d2.en.php";
-
 // Minimum playtime and points required to be eligible for any awards, in minutes
 $award_minplaytime = 60;
 $award_minpointstotal = 0;
@@ -92,11 +88,6 @@ $timedmaps_show_all = False;
 // Allow reading of player Steam profile (overrides all avatar related if set to False)
 // Warning! Setting value to true can slow loading of some pages.
 $steam_profile_read = True;
-
-// Show/hide online player avatars
-// Warning! Setting value to true will slow down the index page some, depending how
-// many players are currently online.
-$players_online_avatars_show = True;
 
 // Number of players to show additional info at Top 10 -players list (set to 0 to disable)
 // Shows player avatar and some other information.

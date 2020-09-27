@@ -59,13 +59,9 @@ else {
     $player_ip = $row['ip'];
 
     $avatarimg = '';
-
-    if ($players_online_avatars_show) {
-      $avatarimgurl = getplayeravatar($row['steamid'], 'icon');
-
-      if($avatarimgurl)
-        $avatarimg = "<img src=\"" . $avatarimgurl . "\" border=\"0\">";
-    }
+    $avatarimgurl = getplayeravatar($row['steamid'], 'icon');
+    if($avatarimgurl)
+      $avatarimg = "<img src=\"" . $avatarimgurl . "\" border=\"0\">";
 
     $country_code = strtolower($geoip->country($row['ip'])->country->isoCode);
     $playername = '<img src="images/flags/'.$country_code.'.gif" alt="'.$country_code.'"> <a href="player.php?steamid='.$row['steamid'].'">'.htmlentities($row['name'], ENT_COMPAT, 'UTF-8').'</a>';
