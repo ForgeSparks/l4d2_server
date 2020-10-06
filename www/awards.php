@@ -149,7 +149,7 @@ if ($cachedate < time() - (60 * $award_cache_refresh)) {
     while ($row = mysql_fetch_array($result)) {
       $country_code = strtolower($geoip->country($row['ip'])->country->isoCode);
       if ($i++ == 0)
-        $table_body .= '<tr><td><img src="images/flags'.$country_code.'.gif" alt="'.$country_code.'"> '.sprintf($award_ppm, 'player.php?steamid='.$row['steamid'], htmlentities($row['name'], ENT_COMPAT, 'UTF-8'), number_format($row[$real_points] / $row[$real_playtime], 2));
+        $table_body .= '<tr><td><img src="images/flags/'.$country_code.'.gif" alt="'.$country_code.'"> '.sprintf($award_ppm, 'player.php?steamid='.$row['steamid'], htmlentities($row['name'], ENT_COMPAT, 'UTF-8'), number_format($row[$real_points] / $row[$real_playtime], 2));
       else
         $table_body .= '<br><i style="font-size: 12px;"><img src="images/flags/'.$country_code.'.gif" alt="'.$country_code.'"> '.sprintf($award_second, 'player.php?steamid='.$row['steamid'], htmlentities($row['name'], ENT_COMPAT, 'UTF-8'), addordinalnumbersuffix($i), number_format($row[$real_points] / $row[$real_playtime], 2)).'</i>';
     }

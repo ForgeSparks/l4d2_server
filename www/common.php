@@ -233,9 +233,8 @@ function parseplayername($profilexml)
 	return parseplayerprofile($profilexml, "/profile/steamID");
 }
 
-function parseplayerhoursplayed2wk($profilexml)
-{
-	return parseplayerprofile($profilexml, "/profile/hoursPlayed2Wk");
+function parseplayerhoursplayed2wk($profilexml) {
+  return parseplayerprofile($profilexml, '/profile/hoursPlayed2Wk');
 }
 
 function parseplayersteamrating($profilexml)
@@ -261,14 +260,13 @@ function parseplayerprivacystate($profilexml)
 *	Returns:
 *		[String] XML Node value
 */
-function parseplayerprofile($profilexml, $xpathnode)
-{
-	$arr = $profilexml->xpath($xpathnode);
+function parseplayerprofile($profilexml, $xpathnode) {
+  $arr = $profilexml->xpath($xpathnode);
 
-	if (!$arr || count($arr) != 1)
-		return "";
+  if (!$arr || count($arr) != 1)
+    return '';
 
-	return "" . $arr[0];
+  return ''.$arr[0];
 }
 
 /*
@@ -341,14 +339,11 @@ function getplayeravatar($steamid, $avatarsize)
 *	Returns:
 *		[SimpleXMLElement] Steam profile XML
 */
-function getplayersteamprofilexml($steamid)
-{
-	if (!$steamid)
-	{
-		return;
-	}
+function getplayersteamprofilexml($steamid) {
+  if (!$steamid)
+    return;
 
-	return simplexml_load_file("http://steamcommunity.com/profiles/" . getfriendid($steamid) . "?xml=1");
+  return simplexml_load_file('http://steamcommunity.com/profiles/'.getfriendid($steamid).'?xml=1');
 }
 
 /*
