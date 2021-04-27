@@ -328,7 +328,7 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
 
 
 
-	$campaignpop = getpopulation($totalkills, $population_file, False);
+	$campaignpop = getpopulation($totalkills, $population_file);
 
 	$campaigninfo = "<p>More zombies have been killed in <b>" . $title . "</b> than the entire population of <a href=\"http://google.com/search?q=site:en.wikipedia.org+" . $campaignpop[0] . "&btnI=1\">" . $campaignpop[0] . "</a>, population <b>" . number_format($campaignpop[1]) . "</b>.<br />That is almost more than the entire population of <a href=\"http://google.com/search?q=site:en.wikipedia.org+" . $campaignpop[2] . "&btnI=1\">" . $campaignpop[2] . "</a>, population <b>" . number_format($campaignpop[3]) . "</b>!</p>\n";
 

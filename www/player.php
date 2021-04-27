@@ -332,7 +332,7 @@ if (mysql_num_rows($result) > 0)
 	$arr_achievements = array();
 
 	if ($row['kills'] > $population_minkills) {
-		$popkills = getpopulation($row['kills'], $population_file, $population_cities);
+		$popkills = getpopulation($row['kills'], $population_file);
 		$arr_achievements[] = "<td><b>City Buster</b></td>
 		<td>" . $playername . " has killed more zombies than the entire population of <a href=\"http://google.com/search?q=site:en.wikipedia.org+" . $popkills[0] . "&btnI=1\">" . $popkills[0] . "</a>, population " . number_format($popkills[1]) . ".<br />
 		That is almost more than the entire population of <a href=\"http://google.com/search?q=site:en.wikipedia.org+" . $popkills[2] . "&btnI=1\">" . $popkills[2] . "</a>, population " . number_format($popkills[3]) . ".</td>";

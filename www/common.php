@@ -61,176 +61,170 @@ function getfriendid($pszAuthID) {
 }
 
 function formatage($date) {
-	$nametable = array(" seconds", " minutes", " hours", " days", " weeks", " months", " years");
-	$agetable = array("60", "60", "24", "7", "4", "12", "10");
-	$ndx = 0;
+  $nametable = array(" seconds", " minutes", " hours", " days", " weeks", " months", " years");
+  $agetable = array("60", "60", "24", "7", "4", "12", "10");
+  $ndx = 0;
 
-	while ($date > $agetable[$ndx]) {
-		$date = $date / $agetable[$ndx];
-		$ndx++;
-		next($agetable);
-	}
+  while ($date > $agetable[$ndx]) {
+    $date = $date / $agetable[$ndx];
+    $ndx++;
+    next($agetable);
+  }
 
-	return number_format($date, 2).$nametable[$ndx];
+  return number_format($date, 2).$nametable[$ndx];
 }
 
-function getpopulation($population, $file, $cityonly) {
-	$cityarr = array();
-	$page = fopen($file, "r");
-	while (($data = fgetcsv($page, 1000, ",")) !== FALSE) {
-		if ((strstr($data[0], "County") || strstr($data[0], "Combined")) && $cityonly)
-			continue;
+function getpopulation($population, $file) {
+  $cityarr = array();
+  $page = fopen($file, "r");
+  while (($data = fgetcsv($page, 1000, ",")) !== FALSE) {
+    $cityarr[$data[1]] = $data[2];
+  }
 
-		$cityarr[$data[1]] = $data[2];
-	}
+  fclose($page);
+  asort($cityarr, SORT_NUMERIC);
 
-	fclose($page);
-	asort($cityarr, SORT_NUMERIC);
+  $returncity = "None";
+  $returncity2 = "The Earth";
 
-	$returncity = "Lamesa, TX";
-	$returncity2 = "The Earth";
+  foreach ($cityarr as $city => $pop) {
+    if ($population > $pop)
+      $returncity = $city;
+    else {
+      $returncity2 = $city;
+      break;
+    }
+  }
 
-	foreach ($cityarr as $city => $pop) {
-		if ($population > $pop)
-			$returncity = $city;
-		else {
-			$returncity2 = $city;
-			break;
-		}
-	}
+  $return = array($returncity, $cityarr[$returncity], $returncity2, $cityarr[$returncity2]);
 
-	$return = array($returncity,
-					$cityarr[$returncity],
-					$returncity2,
-					$cityarr[$returncity2]);
-
-	return $return;
+  return $return;
 }
 
 function gettotalpointsraw($row)
 {
-	$totalpoints = 0;
+  $totalpoints = 0;
 
-	$totalpoints = $row['points'] + $row['points_realism'] + $row['points_survivors'] + $row['points_infected'] + $row['points_survival'] + $row['points_scavenge_survivors'] + $row['points_scavenge_infected'] + $row['points_realism_survivors'] + $row['points_realism_infected'] + $row['points_mutations'];
+  $totalpoints = $row['points'] + $row['points_realism'] + $row['points_survivors'] + $row['points_infected'] + $row['points_survival'] + $row['points_scavenge_survivors'] + $row['points_scavenge_infected'] + $row['points_realism_survivors'] + $row['points_realism_infected'] + $row['points_mutations'];
 
-	return $totalpoints;
+  return $totalpoints;
 }
 
 function gettotalpoints($row)
 {
-	return number_format(gettotalpointsraw($row));
+  return number_format(gettotalpointsraw($row));
 }
 
 function gettotalplaytimecalc($row)
 {
-	return $row['playtime'] + $row['playtime_realism'] + $row['playtime_versus'] + $row['playtime_survival'] + $row['playtime_scavenge'] + $row['playtime_realismversus'] + $row['playtime_mutations'];
+  return $row['playtime'] + $row['playtime_realism'] + $row['playtime_versus'] + $row['playtime_survival'] + $row['playtime_scavenge'] + $row['playtime_realismversus'] + $row['playtime_mutations'];
 }
 
 function gettotalplaytime($row)
 {
-	return getplaytime(gettotalplaytimecalc($row));
+  return getplaytime(gettotalplaytimecalc($row));
 }
 
 function getplaytime($minutes)
 {
-	return formatage($minutes * 60) . " (" . number_format($minutes) . " min)";
+  return formatage($minutes * 60) . " (" . number_format($minutes) . " min)";
 }
 
 function getppm($__points, $__playtime)
 {
-	//echo "\$__points=" . $__points . "<br>";
-	//echo "\$__playtime=" . $__playtime . "<br>";
-	if ($__points != 0 && $__playtime != 0)
-		return $__points / $__playtime;
+  //echo "\$__points=" . $__points . "<br>";
+  //echo "\$__playtime=" . $__playtime . "<br>";
+  if ($__points != 0 && $__playtime != 0)
+    return $__points / $__playtime;
 
-	return 0.0;
+  return 0.0;
 }
 
 function getserversettingsvalue($name)
 {
-	$q = "SELECT svalue FROM server_settings WHERE sname = '" . mysql_real_escape_string($name) . "'";
-	$res = mysql_query($q);
+  $q = "SELECT svalue FROM server_settings WHERE sname = '" . mysql_real_escape_string($name) . "'";
+  $res = mysql_query($q);
 
-	if ($res && mysql_num_rows($res) == 1 && ($r = mysql_fetch_array($res)))
-		return $r['svalue'];
+  if ($res && mysql_num_rows($res) == 1 && ($r = mysql_fetch_array($res)))
+    return $r['svalue'];
 
-	return "";
+  return "";
 }
 
 function setcommontemplatevariables($template)
 {
-	global $header_extra, $site_name, $playercount, $realismlink, $realismversuslink, $mutationslink, $scavengelink, $realismcmblink, $realismversuscmblink, $mutationscmblink, $scavengecmblink, $timedmapslink, $templatefiles;
+  global $header_extra, $site_name, $playercount, $realismlink, $realismversuslink, $mutationslink, $scavengelink, $realismcmblink, $realismversuscmblink, $mutationscmblink, $scavengecmblink, $timedmapslink, $templatefiles;
 
-	$template->set("header_extra", $header_extra); // Players served
-	$template->set("site_name", $site_name); // Site name
+  $template->set("header_extra", $header_extra); // Players served
+  $template->set("site_name", $site_name); // Site name
 
-	$template->set("realismlink", $realismlink); // Realism stats link
-	$template->set("realismversuslink", $realismversuslink); // Realism Versus stats link
-	$template->set("mutationslink", $mutationslink); // Mutations stats link
-	$template->set("scavengelink", $scavengelink); // Scavenge stats link
+  $template->set("realismlink", $realismlink); // Realism stats link
+  $template->set("realismversuslink", $realismversuslink); // Realism Versus stats link
+  $template->set("mutationslink", $mutationslink); // Mutations stats link
+  $template->set("scavengelink", $scavengelink); // Scavenge stats link
 
-	$template->set("realismcmblink", $realismcmblink); // Realism stats link
-	$template->set("realismversuscmblink", $realismversuscmblink); // Realism Versus stats link
-	$template->set("mutationscmblink", $mutationscmblink); // Mutations stats link
-	$template->set("scavengecmblink", $scavengecmblink); // Scavenge stats link
+  $template->set("realismcmblink", $realismcmblink); // Realism stats link
+  $template->set("realismversuscmblink", $realismversuscmblink); // Realism Versus stats link
+  $template->set("mutationscmblink", $mutationscmblink); // Mutations stats link
+  $template->set("scavengecmblink", $scavengecmblink); // Scavenge stats link
 
-	$template->set("stylesheet", $templatefiles['style.css']); // Stylesheet for the page
-	$template->set("statstooltip", $templatefiles['statstooltip.js']); // Tooltip javascript file
-	$template->set("statscombobox", $templatefiles['statscombobox.js']); // Combobox javascript file
+  $template->set("stylesheet", $templatefiles['style.css']); // Stylesheet for the page
+  $template->set("statstooltip", $templatefiles['statstooltip.js']); // Tooltip javascript file
+  $template->set("statscombobox", $templatefiles['statscombobox.js']); // Combobox javascript file
 
-	$template->set("timedmapslink", $timedmapslink); // Timed maps stats link
+  $template->set("timedmapslink", $timedmapslink); // Timed maps stats link
 }
 
 function createtablerowtooltip($row, $i)
 {
-	$points = $row['points'];
-	$totalpoints = gettotalpoints($row);
-	$points_coop = number_format($points);
-	$points_realism = number_format($row['points_realism']);
-	$points_versus = number_format($row['points_survivors'] + $row['points_infected']);
-	$points_versus_sur = number_format($row['points_survivors']);
-	$points_versus_inf = number_format($row['points_infected']);
-	$points_survival = number_format($row['points_survival']);
-	$points_scavenge = number_format($row['points_scavenge_survivors'] + $row['points_scavenge_infected']);
-	$points_scavenge_sur = number_format($row['points_scavenge_survivors']);
-	$points_scavenge_inf = number_format($row['points_scavenge_infected']);
-	$points_realismversus = number_format($row['points_realism_survivors'] + $row['points_realism_infected']);
-	$points_realismversus_sur = number_format($row['points_realism_survivors']);
-	$points_realismversus_inf = number_format($row['points_realism_infected']);
-	$points_mutations = number_format($row['points_mutations']);
-	$totalplaytime = gettotalplaytime($row);
-	$playtime_coop = getplaytime($row['playtime']);
-	$playtime_realism = getplaytime($row['playtime_realism']);
-	$playtime_versus = getplaytime($row['playtime_versus']);
-	$playtime_survival = getplaytime($row['playtime_survival']);
-	$playtime_scavenge = getplaytime($row['playtime_scavenge']);
-	$playtime_realismversus = getplaytime($row['playtime_realismversus']);
-	$playtime_mutations = getplaytime($row['playtime_mutations']);
+  $points = $row['points'];
+  $totalpoints = gettotalpoints($row);
+  $points_coop = number_format($points);
+  $points_realism = number_format($row['points_realism']);
+  $points_versus = number_format($row['points_survivors'] + $row['points_infected']);
+  $points_versus_sur = number_format($row['points_survivors']);
+  $points_versus_inf = number_format($row['points_infected']);
+  $points_survival = number_format($row['points_survival']);
+  $points_scavenge = number_format($row['points_scavenge_survivors'] + $row['points_scavenge_infected']);
+  $points_scavenge_sur = number_format($row['points_scavenge_survivors']);
+  $points_scavenge_inf = number_format($row['points_scavenge_infected']);
+  $points_realismversus = number_format($row['points_realism_survivors'] + $row['points_realism_infected']);
+  $points_realismversus_sur = number_format($row['points_realism_survivors']);
+  $points_realismversus_inf = number_format($row['points_realism_infected']);
+  $points_mutations = number_format($row['points_mutations']);
+  $totalplaytime = gettotalplaytime($row);
+  $playtime_coop = getplaytime($row['playtime']);
+  $playtime_realism = getplaytime($row['playtime_realism']);
+  $playtime_versus = getplaytime($row['playtime_versus']);
+  $playtime_survival = getplaytime($row['playtime_survival']);
+  $playtime_scavenge = getplaytime($row['playtime_scavenge']);
+  $playtime_realismversus = getplaytime($row['playtime_realismversus']);
+  $playtime_mutations = getplaytime($row['playtime_mutations']);
 
-	$ppm_coop = number_format(getppm($points, $row['playtime']), 2);
-	$ppm_versus = number_format(getppm($row['points_survivors'] + $row['points_infected'], $row['playtime_versus']), 2);
-	$ppm_survival = number_format(getppm($row['points_survival'], $row['playtime_survival']), 2);
-	$ppm_realism = number_format(getppm($row['points_realism'], $row['playtime_realism']), 2);
-	$ppm_scavenge = number_format(getppm($row['points_scavenge_survivors'] + $row['points_scavenge_infected'], $row['playtime_scavenge']), 2);
-	$ppm_realismversus = number_format(getppm($row['points_realism_survivors'] + $row['points_realism_infected'], $row['playtime_realismversus']), 2);
-	$ppm_mutations = number_format(getppm($row['points_mutations'], $row['playtime_mutations']), 2);
+  $ppm_coop = number_format(getppm($points, $row['playtime']), 2);
+  $ppm_versus = number_format(getppm($row['points_survivors'] + $row['points_infected'], $row['playtime_versus']), 2);
+  $ppm_survival = number_format(getppm($row['points_survival'], $row['playtime_survival']), 2);
+  $ppm_realism = number_format(getppm($row['points_realism'], $row['playtime_realism']), 2);
+  $ppm_scavenge = number_format(getppm($row['points_scavenge_survivors'] + $row['points_scavenge_infected'], $row['playtime_scavenge']), 2);
+  $ppm_realismversus = number_format(getppm($row['points_realism_survivors'] + $row['points_realism_infected'], $row['playtime_realismversus']), 2);
+  $ppm_mutations = number_format(getppm($row['points_mutations'], $row['playtime_mutations']), 2);
 
   return "<tr onmouseover=\"showtip('<b>Coop: " . $points_coop . " (PPM: " . $ppm_coop . ")<br>Realism: " . $points_realism . " (PPM: " . $ppm_realism . ")<br>Mutations: " . $points_mutations . " (PPM: " . $ppm_mutations . ")<br>Survival: " . $points_survival . " (PPM: " . $ppm_survival . ")<br>Versus: " . $points_versus . " (PPM: " . $ppm_versus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_versus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_versus_inf . "<br><b>Scavenge: " . $points_scavenge . " (PPM: " . $ppm_scavenge . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_scavenge_sur . "<br>&nbsp;&nbsp;Infected: " . $points_scavenge_inf . "<br><b>Realism&nbsp;Versus: " . $points_realismversus . " (PPM: " . $ppm_realismversus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_realismversus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_realismversus_inf . "<br><b>Playtime: " . $totalplaytime . "</b><br>&nbsp;&nbsp;Coop: " . $playtime_coop . "<br>&nbsp;&nbsp;Realism: " . $playtime_realism . "<br>&nbsp;&nbsp;Survival: " . $playtime_survival . "<br>&nbsp;&nbsp;Versus: " . $playtime_versus . "<br>&nbsp;&nbsp;Scavenge: " . $playtime_scavenge . "<br>&nbsp;&nbsp;Realism&nbsp;Versus: " . $playtime_realismversus . "<br>&nbsp;&nbsp;Mutations: " . $playtime_mutations . "');\" onmouseout=\"hidetip();\"" . (($i & 1) ? ">" : " class=\"alt\">");
 }
 
 function parseplayersummary($profilexml)
 {
-	return parseplayerprofile($profilexml, "/profile/summary");
+  return parseplayerprofile($profilexml, "/profile/summary");
 }
 
 function parseplayerheadline($profilexml)
 {
-	return parseplayerprofile($profilexml, "/profile/headline");
+  return parseplayerprofile($profilexml, "/profile/headline");
 }
 
 function parseplayername($profilexml)
 {
-	return parseplayerprofile($profilexml, "/profile/steamID");
+  return parseplayerprofile($profilexml, "/profile/steamID");
 }
 
 function parseplayerhoursplayed2wk($profilexml) {
@@ -239,17 +233,17 @@ function parseplayerhoursplayed2wk($profilexml) {
 
 function parseplayersteamrating($profilexml)
 {
-	return parseplayerprofile($profilexml, "/profile/steamRating");
+  return parseplayerprofile($profilexml, "/profile/steamRating");
 }
 
 function parseplayermembersince($profilexml)
 {
-	return parseplayerprofile($profilexml, "/profile/memberSince");
+  return parseplayerprofile($profilexml, "/profile/memberSince");
 }
 
 function parseplayerprivacystate($profilexml)
 {
-	return parseplayerprofile($profilexml, "/profile/privacyState");
+  return parseplayerprofile($profilexml, "/profile/privacyState");
 }
 
 /*
@@ -279,38 +273,38 @@ function parseplayerprofile($profilexml, $xpathnode) {
 */
 function parseplayeravatar($profilexml, $avatarsize)
 {
-	if (!$profilexml || !$avatarsize)
-	{
-		return "";
-	}
+  if (!$profilexml || !$avatarsize)
+  {
+    return "";
+  }
 
-	$retval = "";
+  $retval = "";
 
-	switch (strtolower($avatarsize))
-	{
-		case "icon":
-			if ($profilexml->avatarIcon)
-			{
-				$retval = $profilexml->avatarIcon;
-			}
-			break;
+  switch (strtolower($avatarsize))
+  {
+    case "icon":
+      if ($profilexml->avatarIcon)
+      {
+        $retval = $profilexml->avatarIcon;
+      }
+      break;
 
-		case "medium":
-			if ($profilexml->avatarMedium)
-			{
-				$retval = $profilexml->avatarMedium;
-			}
-			break;
+    case "medium":
+      if ($profilexml->avatarMedium)
+      {
+        $retval = $profilexml->avatarMedium;
+      }
+      break;
 
-		case "full":
-			if ($profilexml->avatarFull)
-			{
-				$retval = $profilexml->avatarFull;
-			}
-			break;
-	}
+    case "full":
+      if ($profilexml->avatarFull)
+      {
+        $retval = $profilexml->avatarFull;
+      }
+      break;
+  }
 
-	return $retval;
+  return $retval;
 }
 
 /*
@@ -323,13 +317,13 @@ function parseplayeravatar($profilexml, $avatarsize)
 */
 function getplayeravatar($steamid, $avatarsize)
 {
-	if (!$steamid || !$avatarsize)
-	{
-		return "";
-	}
+  if (!$steamid || !$avatarsize)
+  {
+    return "";
+  }
 
-	$xml = getplayersteamprofilexml($steamid);
-	return parseplayeravatar($xml, $avatarsize);
+  $xml = getplayersteamprofilexml($steamid);
+  return parseplayeravatar($xml, $avatarsize);
 }
 
 /*
@@ -359,42 +353,42 @@ $imagesdir_default = $templatesdir_default . "/images";
 
 if (!file_exists($imagesdir_default) || !is_dir($imagesdir_default))
 {
-	echo "Webstats installation is incomplete. Download and install all the files again.<br />\n";
-	exit;
+  echo "Webstats installation is incomplete. Download and install all the files again.<br />\n";
+  exit;
 }
 
 if ($site_template != "" && $site_template != "default" && (!file_exists($templatesdir . "/" . $site_template) || !is_dir($templatesdir . "/" . $site_template)))
 {
-	echo "Webstats \"" . $site_template . "\" template path not found. Reconfigurations required!<br />\n";
-	exit;
+  echo "Webstats \"" . $site_template . "\" template path not found. Reconfigurations required!<br />\n";
+  exit;
 }
 
 if (!function_exists('file_put_contents')) {
-	function file_put_contents($filename, $data) {
-		$f = @fopen($filename, 'w');
-		if (!$f) {
-			return false;
-		} else {
-			$bytes = fwrite($f, $data);
-			fclose($f);
-			return $bytes;
-		}
-	}
+  function file_put_contents($filename, $data) {
+    $f = @fopen($filename, 'w');
+    if (!$f) {
+      return false;
+    } else {
+      $bytes = fwrite($f, $data);
+      fclose($f);
+      return $bytes;
+    }
+  }
 }
 
 if (basename($_SERVER['PHP_SELF']) !== "createtable.php" && basename($_SERVER['PHP_SELF']) !== "updatetable.php" && basename($_SERVER['PHP_SELF']) !== "install.php") {
-	if (file_exists("./install.php")) {
-		echo "Delete the file <b>install.php</b> before running webstats!<br />\n";
-		exit;
-	}
-	if (file_exists("./createtable.php")) {
-		echo "Delete the file <b>createtable.php</b> before running webstats!<br />\n";
-		exit;
-	}
-	if (file_exists("./updatetable.php")) {
-		echo "Delete the file <b>updatetable.php</b> before running webstats!<br />\n";
-		exit;
-	}
+  if (file_exists("./install.php")) {
+    echo "Delete the file <b>install.php</b> before running webstats!<br />\n";
+    exit;
+  }
+  if (file_exists("./createtable.php")) {
+    echo "Delete the file <b>createtable.php</b> before running webstats!<br />\n";
+    exit;
+  }
+  if (file_exists("./updatetable.php")) {
+    echo "Delete the file <b>updatetable.php</b> before running webstats!<br />\n";
+    exit;
+  }
 }
 
 $con_main = mysql_connect($mysql_server, $mysql_user, $mysql_password);
@@ -409,116 +403,116 @@ $realismversus_campaigns = array();
 $mutations_campaigns = array();
 
 $coop_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $versus_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $survival_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $scavenge_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $realism_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $realismversus_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $mutations_campaigns = array("c1m" => "Dead Center",
-				   "c2m" => "Dark Carnival",
-				   "c3m" => "Swamp Fever",
-				   "c4m" => "Hard Rain",
-				   "c5m" => "The Parish",
-				   "c6m" => "The Passing",
-				   "c7m" => "The Sacrifice",
-				   "c8m" => "No Mercy",
-				   "c9m" => "Crash Course",
-				   "c10m" => "Death Toll",
-				   "c11m" => "Dead Air",
-				   "c12m" => "Blood Harvest",
+           "c2m" => "Dark Carnival",
+           "c3m" => "Swamp Fever",
+           "c4m" => "Hard Rain",
+           "c5m" => "The Parish",
+           "c6m" => "The Passing",
+           "c7m" => "The Sacrifice",
+           "c8m" => "No Mercy",
+           "c9m" => "Crash Course",
+           "c10m" => "Death Toll",
+           "c11m" => "Dead Air",
+           "c12m" => "Blood Harvest",
            "c13m" => "Cold Stream",
            "c14m" => "The Last Stand",
-				   "" => "Custom Maps");
+           "" => "Custom Maps");
 
 $realismlink = "";
 $scavengelink = "";
@@ -548,7 +542,7 @@ $timedmapslink = "";
 
 if ($timedmaps_show_all)
 {
-	$timedmapslink = "<li><a href=\"timedmaps.php\">Timed Maps</a></li>";
+  $timedmapslink = "<li><a href=\"timedmaps.php\">Timed Maps</a></li>";
 }
 
 $header_extra = array();
@@ -557,8 +551,8 @@ $header_extra['Players Served'] = 0;
 $result = mysql_query("SELECT COUNT(*) AS players_served, sum(kills) AS total_kills FROM players");
 if ($result && $row = mysql_fetch_array($result))
 {
-	$header_extra['Zombies Killed'] = $row['total_kills'];
-	$header_extra['Players Served'] = $row['players_served'];
+  $header_extra['Zombies Killed'] = $row['total_kills'];
+  $header_extra['Players Served'] = $row['players_served'];
 }
 
 $i = 1;
@@ -588,32 +582,32 @@ if ($result && mysql_num_rows($result) > 0) {
     if ($playerheadline)
       $playername = '<table border=0 cellspacing=0 cellpadding=0 class="top10"><tr><td rowspan="2">&nbsp;</td><td>'.$playername.'</td></tr><tr><td class="summary">'.$playerheadline.'</td></tr></table>';
 
-		if ($avatarimg)
-		{
-			$playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $avatarimg . "</td>" . ($playerheadline ? "" : "<td>&nbsp;</td>") . "<td>" . $playername . "</td></tr></table>";
-		}
+    if ($avatarimg)
+    {
+      $playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $avatarimg . "</td>" . ($playerheadline ? "" : "<td>&nbsp;</td>") . "<td>" . $playername . "</td></tr></table>";
+    }
 
-		if (!$playerheadline && !$avatarimg)
-		{
-			if ($i <= $top10players_additional_info)
-			{
-				$playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $playername . "</td></tr></table>";
-			}
-			else
-			{
-				$playername = "&nbsp;" . $playername;
-			}
-		}
+    if (!$playerheadline && !$avatarimg)
+    {
+      if ($i <= $top10players_additional_info)
+      {
+        $playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $playername . "</td></tr></table>";
+      }
+      else
+      {
+        $playername = "&nbsp;" . $playername;
+      }
+    }
 
-		$top10[] = createtablerowtooltip($row, $i) . "<td><b>" . $i . ".</b></td><td><div style=\"position:relative;width:150px;overflow:hidden;white-space:nowrap;\">" . $playername . "</div></td><td align=\"right\">&nbsp;&nbsp;" . gettotalpoints($row) . "&nbsp;Points</td></tr>";
+    $top10[] = createtablerowtooltip($row, $i) . "<td><b>" . $i . ".</b></td><td><div style=\"position:relative;width:150px;overflow:hidden;white-space:nowrap;\">" . $playername . "</div></td><td align=\"right\">&nbsp;&nbsp;" . gettotalpoints($row) . "&nbsp;Points</td></tr>";
 
-		if ($top10players_additional_info && $i == $top10players_additional_info)
-		{
-			$top10[] = "<tr><td colspan=\"3\">&nbsp;</td></tr>";
-		}
+    if ($top10players_additional_info && $i == $top10players_additional_info)
+    {
+      $top10[] = "<tr><td colspan=\"3\">&nbsp;</td></tr>";
+    }
 
-		$i++;
-	}
+    $i++;
+  }
 }
 
 $arr_templatefiles = php_scandir($templatesdir_default);

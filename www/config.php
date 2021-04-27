@@ -36,7 +36,7 @@ $award_minpoints = 1000;
 
 // How many top players would you like to show on the awards page on each award?
 // Note! You should set this value to at least 1.
-$award_display_players = 3;
+$award_display_players = 5;
 
 // Amount of time in minutes between Awards page cache updates.
 // 0 to disable cacheing
@@ -51,36 +51,8 @@ $dbtimemod = 0;
 // Example: 24h - "M d, Y H:i";
 $lastonlineformat = "M d, Y g:ia";
 
-/*
-Population CSV file. This is taken from the United States Census Bureau, you
-can download a (possibly) more up-to-date file from this URL:
-
-http://www.census.gov/popest/datasets.html
-
-The file will be about half way down, under "Metropolitan, micropolitan, and
-combined statistical area datasets", the CSV file under "Combined
-statistical area population and estimated components of change". Or, check
-the release thread and I can provide an exact URL for the download.
-
-Keep in mind that the file has been drastically altered from it's original
-state, including adding individual States as well as the entire US. If you
-want to create your own CSV file, message me on Allied Modders and I will
-help and possibly include it in a next release.
-*/
-
-$population_file = "population.usa.csv";
-
-/*
-Only display City results, and not Counties. Note: This will drastically
-reduce the uniqueness of the results, cities only make up about 1/3rd of
-the list. Set to True to enable. Default is False.
-
-Also note, the minimum kills if you are using only citites needs to be
-14000 or else you will get erroneous results! Default is 3000.
-*/
-
-$population_minkills = 12619;
-$population_cities = False;
+$population_file = "worldpop.csv";
+$population_minkills = 1000;
 
 // Show/hide link for the timed maps (also disables the page for parameterless use)
 $timedmaps_show_all = False;

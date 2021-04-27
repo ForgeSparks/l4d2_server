@@ -122,7 +122,7 @@ if ($type == 'coop' || $type == 'versus' || $type == 'realism' || $type == 'surv
   $stats = new Template('templates/'.$templatefiles['maps_overview_'.$type.'.tpl']);
   $stats->set('icon_infected', $imagefiles['icon_infected.gif']);
   $stats->set('icon_survivors', $imagefiles['icon_survivors.png']);
-  $totalpop = getpopulation($totals['kills'], $population_file, False);
+  $totalpop = getpopulation($totals['kills'], $population_file);
   $stats->set('totalpop', $totalpop);
   $stats->set('maps', $maparr);
   $output = $stats->fetch('templates/'.$templatefiles['maps_overview_'.$type.'.tpl']);

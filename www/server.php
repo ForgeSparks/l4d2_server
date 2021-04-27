@@ -208,7 +208,7 @@ else
 }
 $stats->set("headshots", number_format($total['headshots']));
 
-$totalpop = getpopulation($total['kills'], $population_file, True);
+$totalpop = getpopulation($total['kills'], $population_file);
 $stats->set("totalpop", $totalpop);
 
 if ($total['infected_spawn_1'] == 0 || $total['infected_smoker_damage'] == 0) $stats->set("avg_smoker", "0");
