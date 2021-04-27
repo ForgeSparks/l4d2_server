@@ -9,7 +9,7 @@ Index / Players Online page - "index.php"
 require_once('common.php');
 
 // Load outer template
-$tpl = new Template('templates/'.$templatefiles['layout.tpl']);
+$tpl = new Template('templates/layout.tpl');
 
 $result = mysql_query('SELECT * FROM players WHERE lastontime >= \''.intval(time() - 300).'\' ORDER BY '.$TOTALPOINTS.' DESC');
 $playercount = number_format(mysql_num_rows($result));
@@ -24,7 +24,7 @@ if (mysql_error())
   $output = '<p><b>MySQL Error:</b> '.mysql_error().'</p>';
 else {
   $arr_online = array();
-  $stats = new Template('templates/'.$templatefiles['online.tpl']);
+  $stats = new Template('templates/online.tpl');
 
   $i = 1;
   while ($row = mysql_fetch_array($result)) {
@@ -82,7 +82,7 @@ else {
     $arr_online[] = '<tr><td colspan="4" align="center">There are no players online</td</tr>';
 
   $stats->set('online', $arr_online);
-  $output = $stats->fetch('templates/'.$templatefiles['online.tpl']);
+  $output = $stats->fetch('templates/online.tpl');
 }
 
 $tpl->set('body', trim($output));
@@ -94,5 +94,5 @@ $tpl->set('top10', $top10);
 $tpl->set('motd_message', $layout_motd);
 
 // Print out the page!
-echo $tpl->fetch('templates/' . $templatefiles['layout.tpl']);
+echo $tpl->fetch('templates/layout.tpl');
 ?>

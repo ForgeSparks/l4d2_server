@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <?php echo (isset($statspagemeta) ? $statspagemeta : ''); ?>
     <title><?php echo $motd_header; ?> :: <?php echo $title; ?></title>
-    <link href="templates/<?php echo $stylesheet; ?>" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
       h1.header {
         margin-left: 10px;
@@ -56,9 +56,9 @@
     <div id="header">
       <table width="700" align="center" cellpaddin="0" cellspacing="0">
         <tr>
-          <td align="center" valign="middle" width="70"><img src="./templates/<?php echo $site_logo; ?>"></td>
+          <td align="center" valign="middle" width="70"><img src="images/site_logo.png"></td>
           <td align="left" valign="top">
-            <h1 class="header"><?php echo $site_name;?></h1>
+            <h1 class="header">ForgeSparks</h1>
             <br>
             <h2 class="header_secondary"><?php echo $motd_header;?></h2>
           </td>

@@ -6,24 +6,10 @@ Configuration file - "config.php"
 */
 
 // MySQL information for L4D Stats DB
-$mysql_server = "localhost";
+$mysql_server = "database:3306";
 $mysql_db = "l4d2_stats";
-$mysql_user = "root";
-$mysql_password = "";
-
-// Heading for the stats page.
-$site_name = "ForgeSparks";
-
-// Supported game versions
-// 0 = Support both L4D1 and L4D2
-// 1 = Left 4 Dead 1 (default)
-// 2 = Left 4 Dead 2
-$game_version = 2;
-
-// Template for the stats page.
-// Leave empty if the default template is used.
-// Usage: "mytemplate" (requires directory ./templates/mytemplate existence)
-$site_template = "";
+$mysql_user = "l4d2_stats";
+$mysql_password = "<password>";
 
 // Minimum playtime and points required to be eligible for any awards, in minutes
 $award_minplaytime = 60;
@@ -38,21 +24,12 @@ $award_minpoints = 1000;
 // Note! You should set this value to at least 1.
 $award_display_players = 5;
 
-// Amount of time in minutes between Awards page cache updates.
-// 0 to disable cacheing
-$award_cache_refresh = 60;
-
 // Database time modifier (hours)
 // 0 if the db time is the same as the websites
 $dbtimemod = 0;
 
-// Date format for player last online time
-// http://www.php.net/manual/en/function.date.php
-// Example: 24h - "M d, Y H:i";
-$lastonlineformat = "M d, Y g:ia";
-
 $population_file = "worldpop.csv";
-$population_minkills = 1000;
+$population_minkills = 50000;
 
 // Show/hide link for the timed maps (also disables the page for parameterless use)
 $timedmaps_show_all = False;

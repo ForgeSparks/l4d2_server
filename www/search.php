@@ -9,7 +9,7 @@ Player Search page - "search.php"
 require_once('common.php');
 
 // Load outer template
-$tpl = new Template('templates/'.$templatefiles['layout.tpl']);
+$tpl = new Template('templates/layout.tpl');
 
 // Set Steam ID as var, and quit on hack attempt
 if (isset($_POST['search']))
@@ -27,7 +27,7 @@ if (mysql_error()) {
   $output = "<p><b>MySQL Error:</b> " . mysql_error() . "</p>\n";
 } else {
   $arr_online = array();
-  $stats = new Template("./templates/" . $templatefiles['search.tpl']);
+  $stats = new Template('./templates/search.tpl');
 
   $i = 1;
   while ($row = mysql_fetch_array($result))
@@ -44,9 +44,11 @@ if (mysql_error()) {
     $arr_online[] = $line;
   }
 
-  if (mysql_num_rows($result) == 0) $arr_online[] = "<tr><td colspan=\"3\" align=\"center\">There are no players that matched!</td</tr>\n";
+  if (mysql_num_rows($result) == 0)
+    $arr_online[] = "<tr><td colspan=\"3\" align=\"center\">There are no players that matched!</td</tr>\n";
+
   $stats->set("online", $arr_online);
-  $output = $stats->fetch("./templates/" . $templatefiles['search.tpl']);
+  $output = $stats->fetch('./templates/search.tpl');
 }
 
 $tpl->set('body', trim($output));
@@ -58,5 +60,5 @@ $tpl->set("top10", $top10);
 $tpl->set("motd_message", $layout_motd);
 
 // Print out the page!
-echo $tpl->fetch("./templates/" . $templatefiles['layout.tpl']);
+echo $tpl->fetch('./templates/layout.tpl');
 ?>

@@ -4,14 +4,14 @@
     <meta charset="utf-8">
     <?php echo (isset($statspagemeta) ? $statspagemeta : ''); ?>
     <title>Left 4 Dead Player Stats :: <?php echo $title; ?></title>
-    <link href="templates/<?php echo $stylesheet; ?>" rel="stylesheet" type="text/css" />
+    <link href="css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
-    <script type="text/javascript" src="templates/<?php echo $statstooltip; ?>"></script>
-    <script type="text/javascript" src="templates/<?php echo $statscombobox; ?>"></script>
+    <script type="text/javascript" src="templates/statstooltip.js"></script>
+    <script type="text/javascript" src="templates/statscombobox.js"></script>
     <div id="header">
       <div id="logo">
-        <h1><?php echo $site_name; ?></h1>
+        <h1>ForgeSparks</h1>
         <br>
         <h2>Left 4 Dead Player Stats</h2>
       </div>

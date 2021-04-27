@@ -78,7 +78,7 @@ function getpopulation($population, $file) {
   $cityarr = array();
   $page = fopen($file, "r");
   while (($data = fgetcsv($page, 1000, ",")) !== FALSE) {
-    $cityarr[$data[1]] = $data[2];
+    $cityarr[$data[0]] = $data[1];
   }
 
   fclose($page);
@@ -153,10 +153,9 @@ function getserversettingsvalue($name)
 
 function setcommontemplatevariables($template)
 {
-  global $header_extra, $site_name, $playercount, $realismlink, $realismversuslink, $mutationslink, $scavengelink, $realismcmblink, $realismversuscmblink, $mutationscmblink, $scavengecmblink, $timedmapslink, $templatefiles;
+  global $header_extra, $playercount, $realismlink, $realismversuslink, $mutationslink, $scavengelink, $realismcmblink, $realismversuscmblink, $mutationscmblink, $scavengecmblink, $timedmapslink;
 
   $template->set("header_extra", $header_extra); // Players served
-  $template->set("site_name", $site_name); // Site name
 
   $template->set("realismlink", $realismlink); // Realism stats link
   $template->set("realismversuslink", $realismversuslink); // Realism Versus stats link
@@ -167,10 +166,6 @@ function setcommontemplatevariables($template)
   $template->set("realismversuscmblink", $realismversuscmblink); // Realism Versus stats link
   $template->set("mutationscmblink", $mutationscmblink); // Mutations stats link
   $template->set("scavengecmblink", $scavengecmblink); // Scavenge stats link
-
-  $template->set("stylesheet", $templatefiles['style.css']); // Stylesheet for the page
-  $template->set("statstooltip", $templatefiles['statstooltip.js']); // Tooltip javascript file
-  $template->set("statscombobox", $templatefiles['statscombobox.js']); // Combobox javascript file
 
   $template->set("timedmapslink", $timedmapslink); // Timed maps stats link
 }
@@ -212,18 +207,15 @@ function createtablerowtooltip($row, $i)
   return "<tr onmouseover=\"showtip('<b>Coop: " . $points_coop . " (PPM: " . $ppm_coop . ")<br>Realism: " . $points_realism . " (PPM: " . $ppm_realism . ")<br>Mutations: " . $points_mutations . " (PPM: " . $ppm_mutations . ")<br>Survival: " . $points_survival . " (PPM: " . $ppm_survival . ")<br>Versus: " . $points_versus . " (PPM: " . $ppm_versus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_versus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_versus_inf . "<br><b>Scavenge: " . $points_scavenge . " (PPM: " . $ppm_scavenge . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_scavenge_sur . "<br>&nbsp;&nbsp;Infected: " . $points_scavenge_inf . "<br><b>Realism&nbsp;Versus: " . $points_realismversus . " (PPM: " . $ppm_realismversus . ")</b><br>&nbsp;&nbsp;Survivors: " . $points_realismversus_sur . "<br>&nbsp;&nbsp;Infected: " . $points_realismversus_inf . "<br><b>Playtime: " . $totalplaytime . "</b><br>&nbsp;&nbsp;Coop: " . $playtime_coop . "<br>&nbsp;&nbsp;Realism: " . $playtime_realism . "<br>&nbsp;&nbsp;Survival: " . $playtime_survival . "<br>&nbsp;&nbsp;Versus: " . $playtime_versus . "<br>&nbsp;&nbsp;Scavenge: " . $playtime_scavenge . "<br>&nbsp;&nbsp;Realism&nbsp;Versus: " . $playtime_realismversus . "<br>&nbsp;&nbsp;Mutations: " . $playtime_mutations . "');\" onmouseout=\"hidetip();\"" . (($i & 1) ? ">" : " class=\"alt\">");
 }
 
-function parseplayersummary($profilexml)
-{
+function parseplayersummary($profilexml) {
   return parseplayerprofile($profilexml, "/profile/summary");
 }
 
-function parseplayerheadline($profilexml)
-{
+function parseplayerheadline($profilexml) {
   return parseplayerprofile($profilexml, "/profile/headline");
 }
 
-function parseplayername($profilexml)
-{
+function parseplayername($profilexml) {
   return parseplayerprofile($profilexml, "/profile/steamID");
 }
 
@@ -231,18 +223,15 @@ function parseplayerhoursplayed2wk($profilexml) {
   return parseplayerprofile($profilexml, '/profile/hoursPlayed2Wk');
 }
 
-function parseplayersteamrating($profilexml)
-{
+function parseplayersteamrating($profilexml) {
   return parseplayerprofile($profilexml, "/profile/steamRating");
 }
 
-function parseplayermembersince($profilexml)
-{
+function parseplayermembersince($profilexml) {
   return parseplayerprofile($profilexml, "/profile/memberSince");
 }
 
-function parseplayerprivacystate($profilexml)
-{
+function parseplayerprivacystate($profilexml) {
   return parseplayerprofile($profilexml, "/profile/privacyState");
 }
 
@@ -274,9 +263,7 @@ function parseplayerprofile($profilexml, $xpathnode) {
 function parseplayeravatar($profilexml, $avatarsize)
 {
   if (!$profilexml || !$avatarsize)
-  {
     return "";
-  }
 
   $retval = "";
 
@@ -284,23 +271,15 @@ function parseplayeravatar($profilexml, $avatarsize)
   {
     case "icon":
       if ($profilexml->avatarIcon)
-      {
         $retval = $profilexml->avatarIcon;
-      }
       break;
-
     case "medium":
       if ($profilexml->avatarMedium)
-      {
         $retval = $profilexml->avatarMedium;
-      }
       break;
-
     case "full":
       if ($profilexml->avatarFull)
-      {
         $retval = $profilexml->avatarFull;
-      }
       break;
   }
 
@@ -318,9 +297,7 @@ function parseplayeravatar($profilexml, $avatarsize)
 function getplayeravatar($steamid, $avatarsize)
 {
   if (!$steamid || !$avatarsize)
-  {
     return "";
-  }
 
   $xml = getplayersteamprofilexml($steamid);
   return parseplayeravatar($xml, $avatarsize);
@@ -346,22 +323,6 @@ Database fields
 
 $TOTALPOINTS = "points + points_survivors + points_infected + points_survival + points_realism + points_scavenge_survivors + points_scavenge_infected + points_realism_survivors + points_realism_infected + points_mutations";
 $TOTALPLAYTIME = "playtime + playtime_versus + playtime_survival + playtime_realism + playtime_scavenge + playtime_realismversus + playtime_mutations";
-
-$templatesdir = "./templates";
-$templatesdir_default = $templatesdir . "/default";
-$imagesdir_default = $templatesdir_default . "/images";
-
-if (!file_exists($imagesdir_default) || !is_dir($imagesdir_default))
-{
-  echo "Webstats installation is incomplete. Download and install all the files again.<br />\n";
-  exit;
-}
-
-if ($site_template != "" && $site_template != "default" && (!file_exists($templatesdir . "/" . $site_template) || !is_dir($templatesdir . "/" . $site_template)))
-{
-  echo "Webstats \"" . $site_template . "\" template path not found. Reconfigurations required!<br />\n";
-  exit;
-}
 
 if (!function_exists('file_put_contents')) {
   function file_put_contents($filename, $data) {
@@ -403,116 +364,116 @@ $realismversus_campaigns = array();
 $mutations_campaigns = array();
 
 $coop_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                        "c2m" => "Dark Carnival",
+                        "c3m" => "Swamp Fever",
+                        "c4m" => "Hard Rain",
+                        "c5m" => "The Parish",
+                        "c6m" => "The Passing",
+                        "c7m" => "The Sacrifice",
+                        "c8m" => "No Mercy",
+                        "c9m" => "Crash Course",
+                        "c10m" => "Death Toll",
+                        "c11m" => "Dead Air",
+                        "c12m" => "Blood Harvest",
+                        "c13m" => "Cold Stream",
+                        "c14m" => "The Last Stand",
+                        "" => "Custom Maps");
 
 $versus_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                          "c2m" => "Dark Carnival",
+                          "c3m" => "Swamp Fever",
+                          "c4m" => "Hard Rain",
+                          "c5m" => "The Parish",
+                          "c6m" => "The Passing",
+                          "c7m" => "The Sacrifice",
+                          "c8m" => "No Mercy",
+                          "c9m" => "Crash Course",
+                          "c10m" => "Death Toll",
+                          "c11m" => "Dead Air",
+                          "c12m" => "Blood Harvest",
+                          "c13m" => "Cold Stream",
+                          "c14m" => "The Last Stand",
+                          "" => "Custom Maps");
 
 $survival_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                            "c2m" => "Dark Carnival",
+                            "c3m" => "Swamp Fever",
+                            "c4m" => "Hard Rain",
+                            "c5m" => "The Parish",
+                            "c6m" => "The Passing",
+                            "c7m" => "The Sacrifice",
+                            "c8m" => "No Mercy",
+                            "c9m" => "Crash Course",
+                            "c10m" => "Death Toll",
+                            "c11m" => "Dead Air",
+                            "c12m" => "Blood Harvest",
+                            "c13m" => "Cold Stream",
+                            "c14m" => "The Last Stand",
+                            "" => "Custom Maps");
 
 $scavenge_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                            "c2m" => "Dark Carnival",
+                            "c3m" => "Swamp Fever",
+                            "c4m" => "Hard Rain",
+                            "c5m" => "The Parish",
+                            "c6m" => "The Passing",
+                            "c7m" => "The Sacrifice",
+                            "c8m" => "No Mercy",
+                            "c9m" => "Crash Course",
+                            "c10m" => "Death Toll",
+                            "c11m" => "Dead Air",
+                            "c12m" => "Blood Harvest",
+                            "c13m" => "Cold Stream",
+                            "c14m" => "The Last Stand",
+                            "" => "Custom Maps");
 
 $realism_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                           "c2m" => "Dark Carnival",
+                           "c3m" => "Swamp Fever",
+                           "c4m" => "Hard Rain",
+                           "c5m" => "The Parish",
+                           "c6m" => "The Passing",
+                           "c7m" => "The Sacrifice",
+                           "c8m" => "No Mercy",
+                           "c9m" => "Crash Course",
+                           "c10m" => "Death Toll",
+                           "c11m" => "Dead Air",
+                           "c12m" => "Blood Harvest",
+                           "c13m" => "Cold Stream",
+                           "c14m" => "The Last Stand",
+                           "" => "Custom Maps");
 
 $realismversus_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                                 "c2m" => "Dark Carnival",
+                                 "c3m" => "Swamp Fever",
+                                 "c4m" => "Hard Rain",
+                                 "c5m" => "The Parish",
+                                 "c6m" => "The Passing",
+                                 "c7m" => "The Sacrifice",
+                                 "c8m" => "No Mercy",
+                                 "c9m" => "Crash Course",
+                                 "c10m" => "Death Toll",
+                                 "c11m" => "Dead Air",
+                                 "c12m" => "Blood Harvest",
+                                 "c13m" => "Cold Stream",
+                                 "c14m" => "The Last Stand",
+                                 "" => "Custom Maps");
 
 $mutations_campaigns = array("c1m" => "Dead Center",
-           "c2m" => "Dark Carnival",
-           "c3m" => "Swamp Fever",
-           "c4m" => "Hard Rain",
-           "c5m" => "The Parish",
-           "c6m" => "The Passing",
-           "c7m" => "The Sacrifice",
-           "c8m" => "No Mercy",
-           "c9m" => "Crash Course",
-           "c10m" => "Death Toll",
-           "c11m" => "Dead Air",
-           "c12m" => "Blood Harvest",
-           "c13m" => "Cold Stream",
-           "c14m" => "The Last Stand",
-           "" => "Custom Maps");
+                             "c2m" => "Dark Carnival",
+                             "c3m" => "Swamp Fever",
+                             "c4m" => "Hard Rain",
+                             "c5m" => "The Parish",
+                             "c6m" => "The Passing",
+                             "c7m" => "The Sacrifice",
+                             "c8m" => "No Mercy",
+                             "c9m" => "Crash Course",
+                             "c10m" => "Death Toll",
+                             "c11m" => "Dead Air",
+                             "c12m" => "Blood Harvest",
+                             "c13m" => "Cold Stream",
+                             "c14m" => "The Last Stand",
+                             "" => "Custom Maps");
 
 $realismlink = "";
 $scavengelink = "";
@@ -541,16 +502,13 @@ $mutationslink = "<li>" . $mutationslink . "</li>";
 $timedmapslink = "";
 
 if ($timedmaps_show_all)
-{
   $timedmapslink = "<li><a href=\"timedmaps.php\">Timed Maps</a></li>";
-}
 
 $header_extra = array();
 $header_extra['Zombies Killed'] = 0;
 $header_extra['Players Served'] = 0;
 $result = mysql_query("SELECT COUNT(*) AS players_served, sum(kills) AS total_kills FROM players");
-if ($result && $row = mysql_fetch_array($result))
-{
+if ($result && $row = mysql_fetch_array($result)) {
   $header_extra['Zombies Killed'] = $row['total_kills'];
   $header_extra['Players Served'] = $row['players_served'];
 }
@@ -583,70 +541,30 @@ if ($result && mysql_num_rows($result) > 0) {
       $playername = '<table border=0 cellspacing=0 cellpadding=0 class="top10"><tr><td rowspan="2">&nbsp;</td><td>'.$playername.'</td></tr><tr><td class="summary">'.$playerheadline.'</td></tr></table>';
 
     if ($avatarimg)
-    {
       $playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $avatarimg . "</td>" . ($playerheadline ? "" : "<td>&nbsp;</td>") . "<td>" . $playername . "</td></tr></table>";
-    }
 
     if (!$playerheadline && !$avatarimg)
     {
       if ($i <= $top10players_additional_info)
-      {
         $playername = "<table border=0 cellspacing=0 cellpadding=0 class=\"top10\"><tr><td>&nbsp;</td><td>" . $playername . "</td></tr></table>";
-      }
       else
-      {
         $playername = "&nbsp;" . $playername;
-      }
     }
 
     $top10[] = createtablerowtooltip($row, $i) . "<td><b>" . $i . ".</b></td><td><div style=\"position:relative;width:150px;overflow:hidden;white-space:nowrap;\">" . $playername . "</div></td><td align=\"right\">&nbsp;&nbsp;" . gettotalpoints($row) . "&nbsp;Points</td></tr>";
 
     if ($top10players_additional_info && $i == $top10players_additional_info)
-    {
       $top10[] = "<tr><td colspan=\"3\">&nbsp;</td></tr>";
-    }
 
     $i++;
-  }
-}
-
-$arr_templatefiles = php_scandir($templatesdir_default);
-$templatefiles = array();
-foreach ($arr_templatefiles as $file) {
-  $templatefiles[$file] = "default/" . $file;
-}
-
-$arr_templatefiles = php_scandir($imagesdir_default);
-$imagefiles = array();
-foreach ($arr_templatefiles as $file) {
-  $imagefiles[$file] = "default/images/" . $file;
-}
-
-if ($site_template != "" && $site_template != "default") {
-  $arr_templatefiles = php_scandir($templatesdir . "/" . $site_template);
-
-  foreach ($arr_templatefiles as $file) {
-    if (!is_dir($file))
-      $templatefiles[$file] = $site_template . "/" . $file;
-  }
-
-  $imagespath = $templatesdir . "/" . $site_template . "/images";
-
-  if (file_exists($imagespath) && is_dir($imagespath)) {
-    $arr_templatefiles = php_scandir($imagespath);
-
-    foreach ($arr_templatefiles as $file) {
-      if (!is_dir($file))
-        $imagefiles[$file] = $site_template . "/images/" . $file;
-    }
   }
 }
 
 $motd_message = htmlentities(getserversettingsvalue('motdmessage'), ENT_COMPAT, 'UTF-8');
 $layout_motd = '';
 if (strlen($motd_message) > 0) {
-  $tpl_msg = new Template('templates/'.$templatefiles['layout_motd.tpl']);
+  $tpl_msg = new Template('templates/layout_motd.tpl');
   $tpl_msg->set('motd_message', $motd_message);
-  $layout_motd = $tpl_msg->fetch('templates/'.$templatefiles['layout_motd.tpl']);
+  $layout_motd = $tpl_msg->fetch('templates/layout_motd.tpl');
 }
 ?>

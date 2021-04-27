@@ -22,7 +22,7 @@ function addordinalnumbersuffix($num) {
 require_once('common.php');
 
 // Load outer template
-$tpl = new Template('templates/'.$templatefiles['layout.tpl']);
+$tpl = new Template('templates/layout.tpl');
 
 $award_ppm = "<a href=\"%s\">%s</a> is The Most Efficient Player with <b>%s Points Per Minute</b>.";
 $award_time = "<a href=\"%s\">%s</a> has the most total playtime with <b>%s of Play</b>.";
@@ -129,8 +129,8 @@ $awardarr = array(
   'infected_tanksniper' => $infected_tanksniper
 );
 
-$cachedate = filemtime('templates/awards_cache.html');
-if ($cachedate < time() - (60 * $award_cache_refresh)) {
+$cachedate = filemtime('./awards_cache.html');
+if ($cachedate < time() - 3600) {
   $real_playtime_sql = $TOTALPLAYTIME;
   $real_playtime = 'real_playtime';
   $real_points_sql = $TOTALPOINTS;
@@ -219,11 +219,11 @@ if ($cachedate < time() - (60 * $award_cache_refresh)) {
     }
   }
 
-  $stats = new Template('templates/'.$templatefiles['awards.tpl']);
-  $stats->set('awards_date', date($lastonlineformat, time()));
+  $stats = new Template('templates/awards.tpl');
+  $stats->set('awards_date', date("M d, Y g:ia", time()));
   $stats->set('awards_body', $table_body);
-  $award_output = $stats->fetch('templates/'.$templatefiles['awards.tpl']);
-  file_put_contents('templates/awards_cache.html', trim($award_output));
+  $award_output = $stats->fetch('templates/awards.tpl');
+  file_put_contents('./awards_cache.html', trim($award_output));
 }
 
 setcommontemplatevariables($tpl);
@@ -231,7 +231,7 @@ setcommontemplatevariables($tpl);
 $tpl->set('title', 'Rank Awards');
 $tpl->set('page_heading', 'Rank Awards');
 
-$output = file_get_contents('templates/awards_cache.html');
+$output = file_get_contents('./awards_cache.html');
 
 $tpl->set('body', trim($output));
 
@@ -242,5 +242,5 @@ $tpl->set('top10', $top10);
 $tpl->set('motd_message', $layout_motd);
 
 // Print out the page!
-echo $tpl->fetch('templates/'.$templatefiles['layout.tpl']);
+echo $tpl->fetch('templates/layout.tpl');
 ?>
