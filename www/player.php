@@ -291,7 +291,13 @@ if (mysql_num_rows($result) > 0) {
   }
 
   if ($row['melee_kills'] >= 1500)
-    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/the_meat_butcher.jpg\" /></td><td><b>The Meat Butcher</b></td><td>Turn into a crazy butcher luniac.</td>";
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/the_meat_butcher.jpg\" /></td><td><b>The Meat Butcher</b></td><td>Turn into a crazy butcher luniac. Get over <b>1500</b> kills with melee weapons.</td>";
+
+  if ($row['headshots'] >= 500)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/no_headed.jpg\" /></td><td><b>No Headed</b></td><td>Get over <b>500</b> headshots on the common infected.</td>";
+
+  if ($row['award_pills'] >= 1)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/pills_here.jpg\" /></td><td><b>Pills here !</b></td><td>Give some pills to another survivor.</td>";
 
   if (count($arr_achievements) == 0)
     $arr_achievements[] = "<td><b>N/A</b></td><td>" . $playername . " has not yet earned any achievements.</td>";
