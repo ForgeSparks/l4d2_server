@@ -186,15 +186,14 @@ if (mysql_num_rows($result) > 0) {
   $stats->set("player_playtime_versus", getplaytime($row['playtime_versus']));
   $stats->set("player_playtime_survival", getplaytime($row['playtime_survival']));
 
-  if ($rank == 1) {
+  if ($rank == 1)
     $text_rank = "<div class='rank lvl1'>" . $rank . "</div>";
-  } elseif ($rank == 2) {
+  elseif ($rank == 2)
     $text_rank = "<div class='rank lvl2'>" . $rank . "</div>";
-  } elseif ($rank == 3) {
+  elseif ($rank == 3)
     $text_rank = "<div class='rank lvl3'>" . $rank . "</div>";
-  } else
+  else
     $text_rank = "<div class='rank lvl4-9'>" . $rank . "</div>";
-  }
   $stats->set("player_rank", $text_rank);
 
   // Points
