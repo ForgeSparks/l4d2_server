@@ -119,8 +119,6 @@ if ($type == 'coop' || $type == 'versus' || $type == 'realism' || $type == 'surv
   $maparr[] = $line.'<td><b>SERVER TOTAL</b></td><td><b>'.formatage($totals['playtime'] * 60).'</b></td>'.(($type == 'versus' || $type == 'scavenge' || $type == 'realismversus') ? '<td><b>'.number_format($totals['infected_win']).'</b></td><td><b>'.number_format($totals['points_infected']).'</b></td>' : '').'<td><b>'.number_format($totals['points']).(($type == 'versus' || $type == 'scavenge' || $type == 'realismversus') ? '' : ' ('.number_format(getppm($totals['points'], $totals['playtime']), 2).')').'</b></td><td><b>'.number_format($totals['kills']).'</b></td>'.(($type == 'versus' || $type == 'scavenge' || $type == 'realismversus') ? '<td><b>'.number_format($totals['kill_survivor']).'</b></td>' : '').(($type == 'coop' || $type == 'realism' || $type == 'survival' || $type == 'mutations') ? '<td><b>'.number_format($totals['restarts']).'</b></td>' : '').'</tr>';
 
   $stats = new Template('templates/maps_overview_' . $type . '.tpl');
-  $stats->set('icon_infected', './images/icon_infected.gif');
-  $stats->set('icon_survivors', './images/icon_survivors.png');
   $totalpop = getpopulation($totals['kills'], $population_file);
   $stats->set('totalpop', $totalpop);
   $stats->set('maps', $maparr);
@@ -131,8 +129,6 @@ if ($type == 'coop' || $type == 'versus' || $type == 'realism' || $type == 'surv
     $stats->set('page_subject', $title);
 
     $maps = new Template('templates/maps_campaign_' . $type . '.tpl');
-    $maps->set('icon_infected', './images/icon_infected.gif'); // Team infected icon
-    $maps->set('icon_survivors', './images/icon_survivors.png'); // Team survivors icon
     $maparr = array();
 
     $query = 'SELECT name, playtime_nor + playtime_adv + playtime_exp as playtime, points_nor + points_adv + points_exp as points, kills_nor + kills_adv + kills_exp as kills';

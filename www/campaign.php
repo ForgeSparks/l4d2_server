@@ -94,8 +94,6 @@ if ($type == "coop" || $type == "versus" || $type == "realism" || $type == "surv
     $stats->set("page_subject", $row['name']);
 
     $map = new Template("./templates/maps_detailed_".$type.".tpl");
-    $map->set("icon_infected", './images/icon_infected.gif'); // Team infected icon
-    $map->set("icon_survivors", './images/icon_survivors.png'); // Team survivors icon
 
     $playtime_arr = array(formatage($playtime[0] * 60),
                           formatage($playtime[1] * 60),
