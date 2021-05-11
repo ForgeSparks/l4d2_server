@@ -22,7 +22,7 @@ $award_minpoints = 1000;
 
 // How many top players would you like to show on the awards page on each award?
 // Note! You should set this value to at least 1.
-$award_display_players = 5;
+$award_display_players = 10;
 
 // Database time modifier (hours)
 // 0 if the db time is the same as the websites

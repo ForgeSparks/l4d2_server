@@ -150,7 +150,7 @@ input, textarea, select {
 /* Page */
 
 #page {
-  width: 875px;
+  width: 950px;
   margin: 0 auto;
 }
 
@@ -352,4 +352,40 @@ a.special:visited {
 a.special:hover, a.special:active {
   color: #FFCC33;
   text-decoration: none;
+}
+
+/* Profile Header - Rank */
+.rank {
+  position: absolute;
+  left: 14px;
+  top: 45px;
+  font-size: 40px;
+  margin: 0;
+  text-align: center;
+  height: 38px;
+  border: 2px solid;
+  width: 38px;
+  line-height: 38px;
+  border-radius: 26px 26px 26px 26px;
+}
+/* Rank 1 */
+.rank.lvl1 {
+  border-color: gold;
+}
+/* Rank 2 */
+.rank.lvl2 {
+  border-color: silver;
+}
+/* Rank 3 */
+.rank.lvl3{
+  border-color: brown;
+}
+/* Rank 4-9 */
+.rank.lvl4-9{
+  border-color: bronze;
+}
+/* Rank 10-999 */
+.rank.lvl10-999{
+  border-color: bronze;
+  font-size: 20px;
 }

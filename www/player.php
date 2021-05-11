@@ -14,7 +14,6 @@ $tpl = new Template('templates/layout.tpl');
 // Set Steam ID as var, and quit on hack attempt
 if (strstr($_GET['steamid'], "/"))
   exit;
-
 $id = mysql_real_escape_string($_GET['steamid']);
 
 setcommontemplatevariables($tpl);
@@ -186,7 +185,19 @@ if (mysql_num_rows($result) > 0) {
   $stats->set("player_playtime_coop", getplaytime($row['playtime']));
   $stats->set("player_playtime_versus", getplaytime($row['playtime_versus']));
   $stats->set("player_playtime_survival", getplaytime($row['playtime_survival']));
-  $stats->set("player_rank", $rank);
+
+  if ($rank == 1) {
+    $text_rank = "<div class='rank lvl1'>" . $rank . "</div>";
+  } elseif ($rank == 2) {
+    $text_rank = "<div class='rank lvl2'>" . $rank . "</div>";
+  } elseif ($rank == 3) {
+    $text_rank = "<div class='rank lvl3'>" . $rank . "</div>";
+  } elseif ($rank >= 4 && $rank <= 9) {
+    $text_rank = "<div class='rank lvl4-9'>" . $rank . "</div>";
+  } else {
+    $text_rank = "<div class='rank lvl10-999'>" . $rank . "</div>";
+  }
+  $stats->set("player_rank", $text_rank);
 
   // Points
   $stats->set("player_points", number_format($totalpoints));

@@ -1,12 +1,16 @@
 <table cellspacing="0" cellpaddin="0" border="0">
     <tr valign="top"><td align="center" width="50%">
-
-<table class="stats">
-    <tr valign="top"><td align="center">
-
-<table class="statsbox">
-<tr><th colspan="2">Player Summary</th></tr>
-<tr onmouseover="showtip('The ranking in the server stats');" onmouseout="hidetip();"><td>Rank:</td><td><?php echo $player_rank;?></td></tr>
+      <table class="stats">
+        <tr valign="top">
+          <td align="center">
+            <table class="statsbox">
+              <tr>
+                <th colspan="2">Player Summary</th>
+              </tr>
+              <tr onmouseover="showtip('The ranking in the server stats');" onmouseout="hidetip();">
+                <td>Rank:</td>
+                <td><?php echo $player_rank;?></td>
+              </tr>
 <tr onmouseover="showtip('Total points earned from the server<br><b>Coop: <?php echo $player_points_coop;?><br><?php echo $player_points_realism;?>Survival: <?php echo $player_points_survival;?><br>Versus: <?php echo $player_points_versus;?></b><br>&nbsp;&nbsp;Survivors: <?php echo $player_points_versus_sur;?><br>&nbsp;&nbsp;Infected: <?php echo $player_points_versus_inf;?><?php echo $player_points_scavenge;?>');" onmouseout="hidetip();"><td>Points:</td><td><?php echo $player_points;?></td></tr>
 <tr onmouseover="showtip('Normal and special infected killed<br>&nbsp;&nbsp;melee: <?php echo $melee_kills;?>');" onmouseout="hidetip();"><td>Infected Killed:</td><td><?php echo $infected_killed;?></td></tr>
 <tr onmouseover="showtip('Survivors killed playing infected<br><b>Versus: <?php echo $survivors_killed_versus;?><?php echo $survivors_killed_scavenge;?></b>');" onmouseout="hidetip();"><td>Survivors Killed:</td><td><?php echo $survivors_killed;?></td></tr>
@@ -95,4 +99,3 @@
 
 </td></tr>
 </table>
-
