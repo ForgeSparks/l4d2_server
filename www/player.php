@@ -192,8 +192,10 @@ if (mysql_num_rows($result) > 0) {
     $text_rank = "<div class='rank lvl2'>" . $rank . "</div>";
   elseif ($rank == 3)
     $text_rank = "<div class='rank lvl3'>" . $rank . "</div>";
-  else
+  elseif ($rank < 100)
     $text_rank = "<div class='rank lvl4-9'>" . $rank . "</div>";
+  else
+    $text_rank = $rank
   $stats->set("player_rank", $text_rank);
 
   // Points
