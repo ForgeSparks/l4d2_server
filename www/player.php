@@ -296,8 +296,26 @@ if (mysql_num_rows($result) > 0) {
   if ($row['headshots'] >= 500)
     $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/no_headed.jpg\" /></td><td><b>No Headed</b></td><td>Get over <b>500</b> headshots on the common infected.</td>";
 
+  if ($row['playtime'] >= 500)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/newcomer.jpg\" /></td><td><b>Newcomer</b></td><td>Play over <b>500</b> minutes on the server.</td>";
+
+  if ($row['playtime'] >= 1500)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/addiction.jpg\" /></td><td><b>Addiction</b></td><td>Play over <b>1500</b> minutes on the server.</td>";
+
+  if ($row['award_witchdisturb'] >= 15)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/waifu.jpg\" /></td><td><b>Waifu</b></td><td>Disturbe the witch <b>15</b> times.</td>";
+
+  if ($row['kill_boomer'] >= 4)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/boom.jpg\" /></td><td><b>Boom !</b></td><td>Kill <b>4</b> boomers on Versus Mode.</td>";
+
   if ($row['award_pills'] >= 1)
     $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/pills_here.jpg\" /></td><td><b>Pills here !</b></td><td>Give some pills to another survivor.</td>";
+
+  if ($row['award_tankkillnodeaths'] >= 10)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/taaank.jpg\" /></td><td><b>Taaank !</b></td><td>Kill <b>10</b> tanks without dying.</td>";
+
+  if ($row['award_medkit'] >= 4)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/the_first_aid.jpg\" /></td><td><b>The First Aid</b></td><td>Heal <b>4</b> survivors with an medkit.</td>";
 
   if (count($arr_achievements) == 0)
     $arr_achievements[] = "<td><b>N/A</b></td><td>" . $playername . " has not yet earned any achievements.</td>";
