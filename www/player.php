@@ -291,7 +291,7 @@ if (mysql_num_rows($result) > 0) {
   }
 
   if ($row['melee_kills'] >= 1500)
-    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/the_meat_butcher.jpg\" /></td><td><b>The Meat Butcher</b></td><td>Turn into a crazy butcher luniac.</td>"
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/the_meat_butcher.jpg\" /></td><td><b>The Meat Butcher</b></td><td>Turn into a crazy butcher luniac.</td>";
 
   if (count($arr_achievements) == 0)
     $arr_achievements[] = "<td><b>N/A</b></td><td>" . $playername . " has not yet earned any achievements.</td>";
