@@ -356,16 +356,13 @@ a.special:hover, a.special:active {
 
 /* Profile Header - Rank */
 .rank {
-  position: absolute;
-  left: 14px;
-  top: 45px;
-  font-size: 40px;
+  font-size: 20px;
   margin: 0;
   text-align: center;
-  height: 38px;
+  height: 22px;
   border: 2px solid;
-  width: 38px;
-  line-height: 38px;
+  width: 22px;
+  line-height: 22px;
   border-radius: 26px 26px 26px 26px;
 }
 /* Rank 1 */
@@ -378,14 +375,9 @@ a.special:hover, a.special:active {
 }
 /* Rank 3 */
 .rank.lvl3{
-  border-color: brown;
+  border-color: #CD7F32;
 }
 /* Rank 4-9 */
 .rank.lvl4-9{
-  border-color: bronze;
-}
-/* Rank 10-999 */
-.rank.lvl10-999{
-  border-color: bronze;
-  font-size: 20px;
+  border-color: brown;
 }
