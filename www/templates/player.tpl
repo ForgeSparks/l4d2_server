@@ -87,15 +87,18 @@
 	</td></tr>
 </table>
 
-</td></tr>
-<tr><td colspan="2" align="center" width="100%">
-
-<table class="statsbox">
-<tr><th colspan="2">Achievements</th></tr>
-<?php foreach ($arr_achievements as $achievement): ?>
-<tr><?php echo $achievement;?></tr>
-<?php endforeach;?>
-</table>
-
-</td></tr>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" width="100%">
+      <table class="statsbox">
+        <tr>
+          <th colspan="3">Achievements</th>
+        </tr>
+        <?php foreach ($arr_achievements as $achievement): ?>
+          <tr><?php echo $achievement;?></tr>
+        <?php endforeach;?>
+      </table>
+    </td>
+  </tr>
 </table>

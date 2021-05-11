@@ -381,3 +381,7 @@ a.special:hover, a.special:active {
 .rank.lvl4-9{
   border-color: brown;
 }
+
+.achievements-image {
+  height: 60px;
+}
