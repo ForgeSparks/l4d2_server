@@ -284,10 +284,14 @@ if (mysql_num_rows($result) > 0) {
 
   if ($row['kills'] > $population_minkills) {
     $popkills = getpopulation($row['kills'], $population_file);
+
     $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/city_buster.jpg\" /></td><td><b>City Buster</b></td>
     <td>" . $playername . " has killed more zombies than the entire population of <a href=\"http://google.com/search?q=site:en.wikipedia.org+" . $popkills[0] . "&btnI=1\">" . $popkills[0] . "</a>, population " . number_format($popkills[1]) . ".<br />
     That is almost more than the entire population of <a href=\"http://google.com/search?q=site:en.wikipedia.org+" . $popkills[2] . "&btnI=1\">" . $popkills[2] . "</a>, population " . number_format($popkills[3]) . ".</td>";
   }
+
+  if ($row['melee_kills'] >= 1500)
+    $arr_achievements[] = "<td><img class=\"achievements-image\" src=\"/images/achievements/the_meat_butcher.jpg\" /></td><td><b>The Meat Butcher</b></td><td>Turn into a crazy butcher luniac.</td>"
 
   if (count($arr_achievements) == 0)
     $arr_achievements[] = "<td><b>N/A</b></td><td>" . $playername . " has not yet earned any achievements.</td>";
